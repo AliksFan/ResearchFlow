@@ -1,0 +1,29 @@
+{
+  "name": "researchflow",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @researchflow/web --filter @researchflow/worker dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck && pnpm typecheck:e2e",
+    "typecheck:e2e": "pnpm --filter @researchflow/web exec tsc -p ../../e2e/tsconfig.json --noEmit",
+    "test": "pnpm -r test",
+    "test:e2e": "playwright test",
+    "db:validate": "pnpm --filter @researchflow/db prisma validate",
+    "db:generate": "pnpm --filter @researchflow/db prisma generate",
+    "db:test:migration": "pnpm --filter @researchflow/db test:database",
+    "db:migrate": "pnpm --filter @researchflow/db prisma migrate dev",
+    "db:deploy": "pnpm --filter @researchflow/db prisma migrate deploy"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "3.1116.0",
+    "@researchflow/auth": "workspace:*",
+    "@researchflow/db": "workspace:*",
+    "@playwright/test": "1.62.1"
+  }
+}

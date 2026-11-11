@@ -1,0 +1,40 @@
+{
+  "name": "@researchflow/web",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "next dev --webpack",
+    "dev:https": "next dev --webpack --experimental-https",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@researchflow/attachments": "workspace:*",
+    "@researchflow/auth": "workspace:*",
+    "@researchflow/collaboration": "workspace:*",
+    "@researchflow/db": "workspace:*",
+    "@researchflow/project-application": "workspace:*",
+    "@node-rs/argon2": "2.1.0",
+    "next": "16.3.3",
+    "next-auth": "4.24.15",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "24.13.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.3",
+    "tailwindcss": "^4",
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
+  }
+}

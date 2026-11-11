@@ -1,0 +1,46 @@
+{
+  "notice": "All data is fictional. Not an executable seed.",
+  "project": {
+    "code": "DEMO-001",
+    "name": "Fictional Research Workflow Demo",
+    "organization": "Example Research Centre",
+    "roles": [
+      {
+        "id": "demo-pmo",
+        "displayName": "Project Office Demo",
+        "role": "PMO"
+      },
+      {
+        "id": "demo-director",
+        "displayName": "Director Demo",
+        "role": "DEAN"
+      },
+      {
+        "id": "demo-lead",
+        "displayName": "Project Lead Demo",
+        "role": "KEY_SUB_I"
+      }
+    ],
+    "workflow": [
+      {
+        "id": "plan",
+        "name": "Approve fictional plan",
+        "predecessors": []
+      },
+      {
+        "id": "progress",
+        "name": "Record fictional progress",
+        "predecessors": [
+          "plan"
+        ]
+      },
+      {
+        "id": "close",
+        "name": "Review fictional completion",
+        "predecessors": [
+          "progress"
+        ]
+      }
+    ]
+  }
+}

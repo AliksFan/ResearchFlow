@@ -1,0 +1,13 @@
+"use client";
+
+import { useState } from "react";
+
+import { completeIssueAttachmentUpload, prepareIssueAttachmentUpload } from "@/app/workspace/issue-actions";
+import { createProjectClosureAttachmentDraft } from "@/app/workspace/project-closure-actions";
+
+export function ProjectClosureAttachmentField({ projectId, completionRequestId }: { projectId: string; completionRequestId: string | null }) {
+  const [declared, setDeclared] = useState(false); const [draftIds, setDraftIds] = useState<string[]>([]); const [status, setStatus] = useState("");
+  async function upload(files: FileList | null) { if (!files?.length) return; if (!declared) { setStatus("请先确认附件禁限数据声明。"); return; } setStatus("正在上传并校验附件……"); try { const draft = await createProjectClosureAttachmentDraft({ projectId, completionRequestId }); if (!draft.ok) throw new Error(draft.error); for (const file of [...files]) { const prepared = await prepareIssueAttachmentUpload({ draftId: draft.value.draftId, idempotencyKey: crypto.randomUUID(), fileName: file.name, declaredMediaType: file.type, sizeBytes: file.size, sha256: await sha256(file), declarationVersion: "PROJECT_LEVEL_NO_PATIENT_DATA_V1" }); if (!prepared.ok) throw new Error(prepared.error); const response = await fetch(prepared.value.uploadUrl, { method: "PUT", headers: prepared.value.requiredHeaders, body: file }); if (!response.ok) throw new Error("OBJECT_STORAGE_UPLOAD_FAILED"); const completed = await completeIssueAttachmentUpload(prepared.value.assetId); if (!completed.ok) throw new Error(completed.error); } setDraftIds((current) => [...current, draft.value.draftId]); setStatus(`已准备 ${files.length} 个附件，可随表单提交。`); } catch (error) { setStatus(error instanceof Error ? error.message : "ATTACHMENT_FAILED"); } }
+  return <fieldset className="grid gap-2 rounded-lg border border-slate-200 p-3"><legend className="px-1 text-sm font-semibold">结题附件（选填）</legend>{draftIds.map((id) => <input key={id} type="hidden" name="attachmentDraftIds" value={id} />)}<label className="flex gap-2 text-xs"><input type="checkbox" checked={declared} onChange={(event) => setDeclared(event.target.checked)} />我确认附件只含项目级资料，不含患者/受试者及个人财务资料。</label><input type="file" multiple accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png" onChange={(event) => void upload(event.target.files)} className="text-sm" />{status ? <p className="text-xs text-slate-600">{status}</p> : null}</fieldset>;
+}
+async function sha256(file: File) { const digest = await crypto.subtle.digest("SHA-256", await file.arrayBuffer()); return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join(""); }

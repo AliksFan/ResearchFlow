@@ -1,0 +1,2721 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RoleCode {
+  DEAN
+  PMO
+  KEY_SUB_I
+  CRC
+  STATISTICIAN
+  COLLABORATION_LEAD
+}
+
+enum AccountStatus {
+  INVITED
+  ACTIVE
+  LOCKED
+  DISABLED
+}
+
+enum CredentialTokenPurpose {
+  ACTIVATION
+  PASSWORD_RESET
+}
+
+enum AuthRateLimitDimension {
+  LOGIN_NAME
+  SOURCE_IP
+}
+
+enum RoleAssignmentGrantSource {
+  SYSTEM_BOOTSTRAP
+  PMO_ACTION
+}
+
+enum AssignmentStatus {
+  PROPOSED
+  ACTIVE
+  ENDED
+}
+
+enum RoleEligibilityStatus {
+  ACTIVE
+  ENDED
+}
+
+enum ProjectApplicationVersionStatus {
+  EDITABLE
+  FROZEN
+}
+
+enum DictionaryOptionSuggestionStatus {
+  PENDING
+  PROMOTED
+  MERGED
+  REJECTED
+}
+
+enum ProjectApplicationActivityType {
+  DRAFT_CREATED
+  DRAFT_SAVED
+  SWIMLANE_MODIFIED
+  SUBMITTED
+  RESUBMITTED
+  RETURNED
+  PAUSED
+  REVIEW_RESUMED
+  REJECTED
+  WITHDRAWN
+  APPROVED
+}
+
+enum ProjectStatus {
+  DRAFT
+  PENDING_ESTABLISHMENT_REVIEW
+  RETURNED_FOR_REVISION
+  ON_HOLD
+  ACTIVE
+  CLOSING
+  COMPLETED
+  ARCHIVED
+  REJECTED
+  CANCELLED
+}
+
+enum EstablishmentDecision {
+  PENDING
+  RETURNED
+  PAUSED
+  REJECTED
+  WITHDRAWN
+  APPROVED
+}
+
+enum CompletionRequestStatus {
+  CLOSURE_BLOCKED
+  CLOSURE_PENDING_PMO_REVIEW
+  CLOSURE_RETURNED_FOR_SUPPLEMENT
+  WITHDRAWN
+  APPROVED
+}
+
+enum CompletionCheckResult {
+  PASSED
+  FAILED
+  EXCEPTION_DECLARED
+}
+
+enum CompletionActivityType {
+  SUBMITTED
+  RETURNED
+  RESUBMITTED
+  PAUSED
+  REVIEW_RESUMED
+  WITHDRAWN
+  TERMINATED_BY_PMO
+  APPROVED
+}
+
+enum FieldChangeCategory {
+  BASIC_INFORMATION
+  PROJECT_STATUS
+}
+
+enum FieldChangeRequestStatus {
+  DRAFT
+  PENDING_PMO_REVIEW
+  PENDING_PRIMARY_KEY_SUB_I_REVIEW
+  RETURNED_FOR_REVISION
+  ON_HOLD
+  PENDING_DEAN_DECISION
+  PENDING_PMO_IMPLEMENTATION
+  PENDING_PMO_APPLICATION
+  DEAN_REJECTED_PENDING_PMO_DISPOSITION
+  APPLIED
+  STALE
+  CLOSED
+}
+
+enum FieldChangeActivityType {
+  SUBMITTED
+  RETURNED
+  RESUBMITTED
+  PAUSED
+  REVIEW_RESUMED
+  PMO_APPLIED
+  ESCALATED_TO_DEAN
+  DEAN_APPROVED
+  DEAN_RETURNED
+  DEAN_REJECTED
+  PMO_IMPLEMENTATION_PROGRESS_RECORDED
+  PMO_IMPLEMENTATION_CONFIRMED
+  APPLIED
+  MARKED_STALE
+  CLOSED
+  SUPERSEDED_BY_NEW_REQUEST
+}
+
+enum LifecycleTemplateStatus {
+  ACTIVE
+  RETIRED
+}
+
+enum LifecycleTemplateVersionStatus {
+  DRAFT
+  PUBLISHED
+  RETIRED
+}
+
+enum ProjectPlanVersionStatus {
+  DRAFT
+  PENDING_REVIEW
+  ACTIVE
+  SUPERSEDED
+  ABANDONED
+}
+
+enum PlanChangeRequestStatus {
+  DRAFT
+  PENDING_PMO_REVIEW
+  PENDING_PRIMARY_KEY_SUB_I_REVIEW
+  RETURNED_FOR_REVISION
+  ON_HOLD
+  PENDING_DEAN_DECISION
+  PENDING_PMO_IMPLEMENTATION
+  PENDING_PMO_ACTIVATION
+  DEAN_REJECTED_PENDING_PMO_DISPOSITION
+  ACTIVATED
+  CLOSED
+}
+
+enum PlanChangeActivityType {
+  SUBMITTED
+  RETURNED
+  RESUBMITTED
+  PAUSED
+  REVIEW_RESUMED
+  PMO_APPROVED
+  PRIMARY_KEY_SUB_I_APPROVED
+  PRIMARY_KEY_SUB_I_RETURNED
+  ESCALATED_TO_DEAN
+  DEAN_APPROVED
+  DEAN_RETURNED
+  DEAN_REJECTED
+  PMO_IMPLEMENTATION_PROGRESS_RECORDED
+  PMO_IMPLEMENTATION_CONFIRMED
+  ACTIVATED
+  CLOSED
+  SUPERSEDED_BY_NEW_REQUEST
+}
+
+enum WorkflowType {
+  STANDARD
+  PROJECT_CUSTOM
+}
+
+enum WorkflowExecutionStatus {
+  NOT_STARTED
+  ACTIVE
+  PENDING_COMPLETION_CONFIRMATION
+  COMPLETED
+}
+
+enum PlanItemApplicability {
+  REQUIRED
+  OPTIONAL
+  NOT_APPLICABLE
+}
+
+enum AttachmentRequirement {
+  NONE
+  OPTIONAL
+  REQUIRED
+}
+
+enum RevisionValueMode {
+  KEEP
+  SET
+  CLEAR
+}
+
+enum WorkflowCompletionRequestStatus {
+  WAITING_FOR_PREDECESSOR
+  PENDING_PMO_REVIEW
+  ISSUE_RESOLUTION_REQUIRED
+  PREDECESSOR_RETURNED_CONFIRMATION
+  RETURNED_FOR_RESUBMISSION
+  APPROVED
+  WITHDRAWN
+  TERMINATED_BY_PLAN_CHANGE
+}
+
+enum WorkflowCompletionReviewRoundStatus {
+  ACTIVE
+  PAUSED
+  APPROVED
+  RETURNED
+  TERMINATED
+}
+
+enum WorkflowCompletionPauseReason {
+  ISSUE_BLOCK
+  PREDECESSOR_RETURNED
+}
+
+enum WorkflowCompletionActivityType {
+  SUBMITTED
+  SUPPLEMENTED
+  RECONFIRMED
+  PAUSED
+  RESUMED
+  RETURNED
+  RESUBMITTED
+  WITHDRAWN
+  APPROVED
+  TERMINATED_BY_PLAN_CHANGE
+}
+
+enum RiskLevel {
+  NONE
+  RISK
+  BLOCKED
+}
+
+enum ResolutionMethod {
+  REPORTER_CONFIRMED
+  PMO_PROXY_CONFIRMED
+}
+
+enum InvalidCloseReason {
+  DUPLICATE
+  INVALID
+  INCORRECT
+  OUT_OF_SCOPE
+  CREATED_BY_MISTAKE
+}
+
+enum IssueHandlingStateCode {
+  PMO_INITIAL_REVIEW
+  REPORTER_SUPPLEMENT
+  PMO_COORDINATION
+  DEAN_DECISION
+  PMO_DECISION_SUPPLEMENT
+  PMO_IMPLEMENTATION
+  DEAN_IMPLEMENTATION_CONFIRMATION
+  REPORTER_RESOLUTION_CONFIRMATION
+  RESOLVED
+  CLOSED_INVALID
+}
+
+enum IssueActivityType {
+  REPORTER_SUPPLEMENT
+  PMO_INTERNAL_NOTE
+  PMO_COORDINATION_UPDATE
+  PROCESSING_SUMMARY_SHARED
+  RISK_LEVEL_CHANGED
+  ISSUE_TYPE_CHANGED
+  DEAN_DECISION_RECORDED
+  PMO_IMPLEMENTATION_UPDATE
+  DEAN_IMPLEMENTATION_REVIEWED
+  REPORTER_RESOLUTION_RESPONSE
+  INVALID_CLOSURE_RECORDED
+  RELATED_ISSUE_CREATED
+}
+
+enum BusinessVisibilityScope {
+  PROJECT_SHARED
+  PMO_ONLY
+  PMO_AND_DEAN
+  ISSUE_PARTICIPANTS
+}
+
+enum IssueDecisionRoundStatus {
+  PENDING_DEAN_DECISION
+  PENDING_PMO_SUPPLEMENT
+  PENDING_PMO_IMPLEMENTATION
+  PENDING_DEAN_REVIEW
+  PENDING_REPORTER_CONFIRMATION
+  COMPLETED
+}
+
+enum IssueDeanDecisionCode {
+  AGREE_WITH_PMO_RECOMMENDATION
+  COORDINATE_RESOURCES
+  OTHER
+}
+
+enum IssueImplementationReviewDecision {
+  ACCEPTED
+  RETURNED
+}
+
+enum IssueSharedSummaryType {
+  INITIAL
+  COORDINATION
+  IMPLEMENTATION
+  RESOLUTION
+  INVALID_CLOSURE
+}
+
+enum ExternalContactStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum IssueEmailStatus {
+  PENDING
+  SENDING
+  SENT
+  PARTIALLY_FAILED
+  FAILED
+  CANCELLED
+}
+
+enum EmailRecipientType {
+  TO
+  CC
+}
+
+enum EmailDeliveryStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+enum EmailAttemptStatus {
+  SENT
+  FAILED
+}
+
+enum NotificationType {
+  ISSUE_MESSAGE
+  WORKFLOW_FILL_REMINDER
+  MILESTONE_UPCOMING_REMINDER
+  MILESTONE_OVERDUE_REMINDER
+  PROJECT_REVIEW_NOTICE
+  WORKFLOW_REVIEW_NOTICE
+  SYSTEM_NOTICE
+}
+
+enum NotificationReadStatus {
+  UNREAD
+  READ
+}
+
+enum NotificationMessageKind {
+  INFORMATIONAL
+  ACTION
+}
+
+enum NotificationActionStatus {
+  NOT_APPLICABLE
+  PENDING
+  COMPLETED
+}
+
+enum CollaborationResponsibilityType {
+  WORKFLOW_COMPLETION_PMO_REVIEW
+  PROJECT_COMPLETION_PMO_REVIEW
+  PROJECT_COMPLETION_SUPPLEMENT
+  ISSUE_DEAN_DECISION
+  ISSUE_PMO_IMPLEMENTATION
+  ISSUE_REPORTER_SUPPLEMENT
+  ISSUE_REPORTER_CONFIRMATION
+}
+
+enum ProjectCompletionReviewRoundStatus {
+  ACTIVE
+  APPROVED
+  RETURNED
+  BLOCKED_ENDED
+}
+
+enum ProjectCompletionSupplementReason {
+  RESUBMITTED
+  WITHDRAWN
+}
+
+enum ProjectCompletionBlockType {
+  REQUIRED_NODE_INCOMPLETE
+  OPEN_ISSUE
+  GOVERNANCE_MATERIAL_MISSING
+}
+
+enum ProjectArchiveAction {
+  ARCHIVED
+  RESTORED
+}
+
+enum OutboxStatus {
+  PENDING
+  PROCESSING
+  SENT
+  SKIPPED_NO_ADDRESS
+  FAILED_FINAL
+}
+
+enum OutboxAttemptStatus {
+  SENT
+  FAILED
+}
+
+enum AttachmentDraftStatus {
+  OPEN
+  SUBMITTED
+  ABANDONED
+  EXPIRED
+}
+
+enum AttachmentUploadSessionStatus {
+  OPEN
+  COMPLETED
+  FAILED
+  EXPIRED
+  ABANDONED
+}
+
+enum FileAssetStatus {
+  UPLOADING
+  AVAILABLE
+  REJECTED
+  REMOVED
+}
+
+enum AttachmentRemovalReason {
+  DRAFT_ABANDONED
+  DRAFT_EXPIRED
+  SECURITY_DOWNLOAD_BLOCKED
+  STORAGE_OBJECT_MISSING
+}
+
+enum AttachmentParentType {
+  WORKFLOW_UPDATE
+  WORKFLOW_COMPLETION_SUBMISSION
+  WORKFLOW_COMPLETION_SUPPLEMENT
+  ISSUE
+  ISSUE_ACTIVITY
+  ISSUE_DEAN_DECISION
+  ISSUE_IMPLEMENTATION_SUBMISSION
+  PROJECT_PLAN_CHANGE_REQUEST
+  PROJECT_PLAN_CHANGE_ACTIVITY
+  PROJECT_FIELD_CHANGE_REQUEST
+  PROJECT_FIELD_CHANGE_ACTIVITY
+  PROJECT_COMPLETION_SUBMISSION_VERSION
+}
+
+enum AuditResult {
+  SUCCESS
+  FAILURE
+}
+
+enum AuditStorageTier {
+  ONLINE
+  ARCHIVED
+}
+
+enum ExportType {
+  PROJECT_LEDGER_XLSX
+  DEAN_ONE_PAGE_PDF
+}
+
+enum ExportStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+enum ReminderRunStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  PARTIALLY_FAILED
+  FAILED
+}
+
+enum WorkerHeartbeatStatus {
+  STARTING
+  RUNNING
+  STOPPED
+}
+
+model Person {
+  id                                      String                               @id @default(uuid()) @db.Uuid
+  employeeNo                              String?                              @unique @map("employee_no")
+  displayName                             String                               @map("display_name")
+  loginName                               String                               @unique @map("login_name")
+  workEmail                               String?                              @unique @map("work_email")
+  mobile                                  String?
+  passwordHash                            String?                              @map("password_hash")
+  departmentName                          String?                              @map("department_name")
+  accountStatus                           AccountStatus                        @default(INVITED) @map("account_status")
+  mustChangePassword                      Boolean                              @default(true) @map("must_change_password")
+  failedLoginCount                        Int                                  @default(0) @map("failed_login_count")
+  failedLoginWindowStartedAt              DateTime?                            @map("failed_login_window_started_at") @db.Timestamptz(3)
+  lockedUntil                             DateTime?                            @map("locked_until") @db.Timestamptz(3)
+  passwordChangedAt                       DateTime?                            @map("password_changed_at") @db.Timestamptz(3)
+  lastLoginAt                             DateTime?                            @map("last_login_at") @db.Timestamptz(3)
+  createdAt                               DateTime                             @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                               DateTime                             @updatedAt @map("updated_at") @db.Timestamptz(3)
+  sessions                                Session[]
+  credentialTokens                        AuthCredentialToken[]
+  passwordHistory                         PasswordHistory[]
+  roleAssignments                         RoleAssignment[]                     @relation("RoleAssignmentPerson")
+  roleAssignmentsGranted                  RoleAssignment[]                     @relation("RoleAssignmentGrantor")
+  roleEligibilities                       RoleEligibility[]                    @relation("RoleEligibilityPerson")
+  roleEligibilitiesGranted                RoleEligibility[]                    @relation("RoleEligibilityGrantor")
+  roleEligibilitiesEnded                  RoleEligibility[]                    @relation("RoleEligibilityEnder")
+  appliedProjects                         Project[]                            @relation("ProjectApplicant")
+  establishedProjects                     Project[]                            @relation("ProjectEstablisher")
+  cancelledProjects                       Project[]                            @relation("ProjectCanceller")
+  establishmentSubmissions                ProjectEstablishmentReview[]         @relation("EstablishmentSubmitter")
+  establishmentReviews                    ProjectEstablishmentReview[]         @relation("EstablishmentReviewer")
+  applicationVersionsCreated              ProjectApplicationVersion[]
+  proposedApplicationOwnerships           ProjectApplicationVersionOwner[]
+  projectApplicationActivities            ProjectApplicationActivity[]
+  projectApplicationCommands              ProjectApplicationCommand[]
+  completionActivities                    ProjectCompletionActivity[]
+  primaryKeySubIChanges                   ProjectPrimaryKeySubIChange[]
+  fieldChangeRequests                     ProjectFieldChangeRequest[]
+  fieldChangeActivities                   ProjectFieldChangeActivity[]
+  governanceSettingsUpdated               ProjectGovernanceSetting[]
+  templateVersionsPublished               LifecycleTemplateVersion[]
+  planVersionsCreated                     ProjectPlanVersion[]
+  planChangeRequests                      ProjectPlanChangeRequest[]
+  planChangeActivities                    ProjectPlanChangeActivity[]
+  reminderSettingsUpdated                 ProjectReminderSetting[]
+  workflowUpdates                         WorkflowUpdate[]
+  issuesReported                          Issue[]                              @relation("IssueReporter")
+  issuesResolved                          Issue[]                              @relation("IssueResolver")
+  issueStatesRequired                     IssueHandlingState[]                 @relation("IssueStateRequiredPerson")
+  issueStatesEntered                      IssueHandlingState[]                 @relation("IssueStateEnteredBy")
+  issueConfirmationSettingsUpdated        IssueConfirmationSetting[]
+  issueActivities                         IssueActivity[]
+  issueEmailsSent                         IssueEmail[]
+  issueEmailRecipients                    IssueEmailRecipient[]
+  notificationsReceived                   Notification[]                       @relation("NotificationRecipient")
+  notificationsTriggered                  Notification[]                       @relation("NotificationTrigger")
+  auditLogs                               AuditLog[]
+  dictionarySuggestionsReviewed           DictionaryOptionSuggestion[]         @relation("DictionarySuggestionReviewer")
+  dictionarySuggestionSourcesSubmitted    DictionaryOptionSuggestionSource[]   @relation("DictionarySuggestionSubmitter")
+  exportJobs                              ExportJob[]
+  projectCompletionSubmissions            ProjectCompletionSubmissionVersion[]
+  projectCompletionReviewsCompleted       ProjectCompletionReviewRound[]
+  projectCompletionSupplementsResponsible ProjectCompletionSupplementRound[]
+  projectArchiveActivities                ProjectArchiveActivity[]
+  workflowUpdateCorrections               WorkflowUpdateCorrection[]
+  workflowCompletionSubmissions           WorkflowCompletionSubmission[]
+  workflowCompletionSupplements           WorkflowCompletionSupplement[]
+  workflowCompletionReviewsCompleted      WorkflowCompletionReviewRound[]
+  workflowCompletionActivities            WorkflowCompletionActivity[]
+  issueDeanDecisions                      IssueDeanDecision[]
+  issueImplementationSubmissions          IssueImplementationSubmission[]
+  issueImplementationReviews              IssueImplementationReview[]
+  issueReviewTransfersFromDean            IssueDeanReviewTransfer[]            @relation("IssueReviewTransferFromDean")
+  issueReviewTransfersRequested           IssueDeanReviewTransfer[]            @relation("IssueReviewTransferRequester")
+  issueReviewTransfersAccepted            IssueDeanReviewTransfer[]            @relation("IssueReviewTransferAcceptedDean")
+  issueSharedSummaries                    IssueSharedSummary[]
+  collaborationTimeLimitsUpdated          CollaborationTimeLimitSetting[]
+  notificationOutboxes                    NotificationOutbox[]
+  attachmentDrafts                        AttachmentDraft[]
+  attachmentUploadSessions                AttachmentUploadSession[]
+  fileAssetsUploaded                      FileAsset[]
+  businessAttachmentsAdded                BusinessAttachment[]
+
+  @@index([accountStatus])
+  @@map("person")
+}
+
+model AuthCredentialToken {
+  id         String                 @id @default(uuid()) @db.Uuid
+  personId   String                 @map("person_id") @db.Uuid
+  purpose    CredentialTokenPurpose
+  tokenHash  String                 @unique @map("token_hash")
+  expiresAt  DateTime               @map("expires_at") @db.Timestamptz(3)
+  consumedAt DateTime?              @map("consumed_at") @db.Timestamptz(3)
+  revokedAt  DateTime?              @map("revoked_at") @db.Timestamptz(3)
+  createdAt  DateTime               @default(now()) @map("created_at") @db.Timestamptz(3)
+  person     Person                 @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([personId, purpose, expiresAt])
+  @@index([expiresAt])
+  @@map("auth_credential_token")
+}
+
+model PasswordHistory {
+  id           String   @id @default(uuid()) @db.Uuid
+  personId     String   @map("person_id") @db.Uuid
+  passwordHash String   @map("password_hash")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  person       Person   @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([personId, createdAt])
+  @@map("password_history")
+}
+
+model AuthRateLimit {
+  id              String                 @id @default(uuid()) @db.Uuid
+  dimension       AuthRateLimitDimension
+  keyHash         String                 @map("key_hash")
+  failureCount    Int                    @default(0) @map("failure_count")
+  windowStartedAt DateTime?              @map("window_started_at") @db.Timestamptz(3)
+  lockedUntil     DateTime?              @map("locked_until") @db.Timestamptz(3)
+  createdAt       DateTime               @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt       DateTime               @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@unique([dimension, keyHash])
+  @@index([lockedUntil])
+  @@map("auth_rate_limit")
+}
+
+model Session {
+  id             String     @id @default(uuid()) @db.Uuid
+  personId       String     @map("person_id") @db.Uuid
+  tokenHash      String     @unique @map("token_hash")
+  activeRoleCode RoleCode?  @map("active_role_code")
+  expiresAt      DateTime   @map("expires_at") @db.Timestamptz(3)
+  revokedAt      DateTime?  @map("revoked_at") @db.Timestamptz(3)
+  createdAt      DateTime   @default(now()) @map("created_at") @db.Timestamptz(3)
+  lastSeenAt     DateTime   @default(now()) @map("last_seen_at") @db.Timestamptz(3)
+  person         Person     @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  auditLogs      AuditLog[]
+
+  @@index([personId, expiresAt])
+  @@map("session")
+}
+
+model RoleAssignment {
+  id                     String                        @id @default(uuid()) @db.Uuid
+  personId               String                        @map("person_id") @db.Uuid
+  roleCode               RoleCode                      @map("role_code")
+  projectId              String?                       @map("project_id") @db.Uuid
+  assignmentStatus       AssignmentStatus              @default(PROPOSED) @map("assignment_status")
+  isPrimary              Boolean                       @default(false) @map("is_primary")
+  grantSource            RoleAssignmentGrantSource     @default(PMO_ACTION) @map("grant_source")
+  grantedByPersonId      String?                       @map("granted_by_person_id") @db.Uuid
+  proposedAt             DateTime                      @default(now()) @map("proposed_at") @db.Timestamptz(3)
+  activatedAt            DateTime?                     @map("activated_at") @db.Timestamptz(3)
+  endedAt                DateTime?                     @map("ended_at") @db.Timestamptz(3)
+  person                 Person                        @relation("RoleAssignmentPerson", fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  project                Project?                      @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  grantedBy              Person?                       @relation("RoleAssignmentGrantor", fields: [grantedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  previousPrimaryChanges ProjectPrimaryKeySubIChange[] @relation("PreviousPrimaryAssignment")
+  newPrimaryChanges      ProjectPrimaryKeySubIChange[] @relation("NewPrimaryAssignment")
+
+  @@unique([projectId, id])
+  @@index([personId, assignmentStatus])
+  @@index([projectId, roleCode, assignmentStatus])
+  @@map("role_assignment")
+}
+
+model RoleEligibility {
+  id                String                @id @default(uuid()) @db.Uuid
+  personId          String                @map("person_id") @db.Uuid
+  roleCode          RoleCode              @default(KEY_SUB_I) @map("role_code")
+  status            RoleEligibilityStatus @default(ACTIVE)
+  grantedByPersonId String                @map("granted_by_person_id") @db.Uuid
+  grantedAt         DateTime              @default(now()) @map("granted_at") @db.Timestamptz(3)
+  endedByPersonId   String?               @map("ended_by_person_id") @db.Uuid
+  endedAt           DateTime?             @map("ended_at") @db.Timestamptz(3)
+  reason            String
+  person            Person                @relation("RoleEligibilityPerson", fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  grantedBy         Person                @relation("RoleEligibilityGrantor", fields: [grantedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  endedBy           Person?               @relation("RoleEligibilityEnder", fields: [endedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([personId, roleCode, status])
+  @@map("role_eligibility")
+}
+
+model Project {
+  id                               String                                  @id @default(uuid()) @db.Uuid
+  applicationCode                  String                                  @unique @map("application_code")
+  projectCode                      String?                                 @unique @map("project_code")
+  projectName                      String                                  @map("project_name")
+  projectSummary                   String?                                 @map("project_summary")
+  applicantPersonId                String                                  @map("applicant_person_id") @db.Uuid
+  currentApplicationVersionId      String?                                 @unique @map("current_application_version_id") @db.Uuid
+  normalizedNameOccupancy          String?                                 @map("normalized_name_occupancy")
+  status                           ProjectStatus                           @default(DRAFT)
+  rowVersion                       Int                                     @default(0) @map("row_version")
+  leadOrganizationName             String?                                 @map("lead_organization_name")
+  sponsorName                      String?                                 @map("sponsor_name")
+  diseaseAreaDictionaryCode        String                                  @default("DISEASE_AREA") @map("disease_area_dictionary_code")
+  diseaseAreaOptionId              String?                                 @map("disease_area_option_id") @db.Uuid
+  diseaseAreaOtherText             String?                                 @map("disease_area_other_text")
+  researchTypeDictionaryCode       String                                  @default("RESEARCH_TYPE") @map("research_type_dictionary_code")
+  researchTypeOptionId             String?                                 @map("research_type_option_id") @db.Uuid
+  researchTypeOtherText            String?                                 @map("research_type_other_text")
+  plannedStartDate                 DateTime?                               @map("planned_start_date") @db.Date
+  plannedEndDate                   DateTime?                               @map("planned_end_date") @db.Date
+  fundingRecordAmountCny           Decimal?                                @map("funding_record_amount_cny") @db.Decimal(14, 2)
+  establishedByPersonId            String?                                 @map("established_by_person_id") @db.Uuid
+  establishedAt                    DateTime?                               @map("established_at") @db.Timestamptz(3)
+  completedAt                      DateTime?                               @map("completed_at") @db.Timestamptz(3)
+  archivedAt                       DateTime?                               @map("archived_at") @db.Timestamptz(3)
+  cancelledAt                      DateTime?                               @map("cancelled_at") @db.Timestamptz(3)
+  cancellationReason               String?                                 @map("cancellation_reason")
+  cancelledByPersonId              String?                                 @map("cancelled_by_person_id") @db.Uuid
+  createdAt                        DateTime                                @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                        DateTime                                @updatedAt @map("updated_at") @db.Timestamptz(3)
+  applicant                        Person                                  @relation("ProjectApplicant", fields: [applicantPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  establishedBy                    Person?                                 @relation("ProjectEstablisher", fields: [establishedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  cancelledBy                      Person?                                 @relation("ProjectCanceller", fields: [cancelledByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  diseaseAreaOption                DictionaryOption?                       @relation("ProjectDiseaseArea", fields: [diseaseAreaDictionaryCode, diseaseAreaOptionId], references: [dictionaryCode, id], onDelete: Restrict, onUpdate: Restrict)
+  researchTypeOption               DictionaryOption?                       @relation("ProjectResearchType", fields: [researchTypeDictionaryCode, researchTypeOptionId], references: [dictionaryCode, id], onDelete: Restrict, onUpdate: Restrict)
+  roleAssignments                  RoleAssignment[]
+  applicationVersions              ProjectApplicationVersion[]             @relation("ProjectApplicationVersions")
+  currentApplicationVersion        ProjectApplicationVersion?              @relation("CurrentApplicationVersion", fields: [currentApplicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  applicationActivities            ProjectApplicationActivity[]
+  applicationCommands              ProjectApplicationCommand[]
+  collaboratingCenters             ProjectCollaboratingCenter[]
+  establishmentReviews             ProjectEstablishmentReview[]
+  completionRequests               ProjectCompletionRequest[]
+  completionActivities             ProjectCompletionActivity[]
+  primaryKeySubIChanges            ProjectPrimaryKeySubIChange[]
+  fieldChangeRequests              ProjectFieldChangeRequest[]
+  projectPlan                      ProjectPlan?
+  reminderSetting                  ProjectReminderSetting?
+  planChangeRequests               ProjectPlanChangeRequest[]
+  stages                           ProjectStage[]
+  workflows                        ProjectWorkflow[]
+  workflowStages                   ProjectWorkflowStage[]
+  workflowUpdates                  WorkflowUpdate[]
+  issues                           Issue[]
+  issueHandlingStates              IssueHandlingState[]
+  issueConfirmationSetting         IssueConfirmationSetting?
+  issueActivities                  IssueActivity[]
+  issueEmails                      IssueEmail[]
+  issueEmailRecipients             IssueEmailRecipient[]
+  emailDeliveryAttempts            EmailDeliveryAttempt[]
+  notifications                    Notification[]
+  auditLogs                        AuditLog[]
+  completionChecks                 ProjectCompletionCheck[]
+  completionSubmissionVersions     ProjectCompletionSubmissionVersion[]
+  completionReviewRounds           ProjectCompletionReviewRound[]
+  completionSupplementRounds       ProjectCompletionSupplementRound[]
+  completionBlocks                 ProjectCompletionBlock[]
+  archiveActivities                ProjectArchiveActivity[]
+  workflowStageDependencies        ProjectWorkflowStageDependencyVersion[]
+  workflowUpdateCorrections        WorkflowUpdateCorrection[]
+  workflowCompletionRequests       WorkflowCompletionRequest[]
+  workflowCompletionSubmissions    WorkflowCompletionSubmission[]
+  workflowCompletionSupplements    WorkflowCompletionSupplement[]
+  workflowCompletionReviewRounds   WorkflowCompletionReviewRound[]
+  workflowCompletionReviewPauses   WorkflowCompletionReviewPause[]
+  workflowCompletionActivities     WorkflowCompletionActivity[]
+  issueDecisionRounds              IssueDecisionRound[]
+  issueDeanDecisions               IssueDeanDecision[]
+  issueImplementationSubmissions   IssueImplementationSubmission[]
+  issueImplementationReviews       IssueImplementationReview[]
+  issueDeanReviewTransfers         IssueDeanReviewTransfer[]
+  issueSharedSummaries             IssueSharedSummary[]
+  collaborationTimeLimits          CollaborationTimeLimitSetting[]
+  attachmentDrafts                 AttachmentDraft[]
+  attachmentUploadSessions         AttachmentUploadSession[]
+  fileAssets                       FileAsset[]
+  businessAttachments              BusinessAttachment[]
+
+  @@unique([id, rowVersion])
+  @@index([status, createdAt])
+  @@index([projectCode])
+  @@map("project")
+}
+
+model ProjectCollaboratingCenter {
+  id         String   @id @default(uuid()) @db.Uuid
+  projectId  String   @map("project_id") @db.Uuid
+  centerName String   @map("center_name")
+  sortOrder  Int      @default(0) @map("sort_order")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(3)
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectId, centerName])
+  @@index([projectId, sortOrder])
+  @@map("project_collaborating_center")
+}
+
+model ProjectApplicationVersion {
+  id                          String                                 @id @default(uuid()) @db.Uuid
+  projectId                   String                                 @map("project_id") @db.Uuid
+  versionNo                   Int                                    @map("version_no")
+  versionStatus               ProjectApplicationVersionStatus        @default(EDITABLE) @map("version_status")
+  projectName                 String                                 @map("project_name")
+  projectSummary              String?                                @map("project_summary")
+  leadOrganizationName        String?                                @map("lead_organization_name")
+  sponsorName                 String?                                @map("sponsor_name")
+  fundingRecordAmountCny      Decimal?                               @map("funding_record_amount_cny") @db.Decimal(14, 2)
+  diseaseAreaDictionaryCode   String                                 @default("DISEASE_AREA") @map("disease_area_dictionary_code")
+  diseaseAreaOptionId         String?                                @map("disease_area_option_id") @db.Uuid
+  diseaseAreaOtherText        String?                                @map("disease_area_other_text")
+  researchTypeDictionaryCode  String                                 @default("RESEARCH_TYPE") @map("research_type_dictionary_code")
+  researchTypeOptionId        String?                                @map("research_type_option_id") @db.Uuid
+  researchTypeOtherText       String?                                @map("research_type_other_text")
+  lifecycleTemplateVersionId  String?                                @map("lifecycle_template_version_id") @db.Uuid
+  swimlaneName                String                                 @default("项目生命周期泳道") @map("swimlane_name")
+  swimlaneRevision            Int                                    @default(0) @map("swimlane_revision")
+  createdByPersonId           String                                 @map("created_by_person_id") @db.Uuid
+  createdAt                   DateTime                               @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                   DateTime                               @updatedAt @map("updated_at") @db.Timestamptz(3)
+  frozenAt                    DateTime?                              @map("frozen_at") @db.Timestamptz(3)
+  project                     Project                                @relation("ProjectApplicationVersions", fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  currentForProject           Project?                               @relation("CurrentApplicationVersion")
+  diseaseAreaOption           DictionaryOption?                      @relation("ApplicationVersionDiseaseArea", fields: [diseaseAreaDictionaryCode, diseaseAreaOptionId], references: [dictionaryCode, id], onDelete: Restrict, onUpdate: Restrict)
+  researchTypeOption          DictionaryOption?                      @relation("ApplicationVersionResearchType", fields: [researchTypeDictionaryCode, researchTypeOptionId], references: [dictionaryCode, id], onDelete: Restrict, onUpdate: Restrict)
+  lifecycleTemplateVersion    LifecycleTemplateVersion?              @relation(fields: [lifecycleTemplateVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  createdBy                   Person                                 @relation(fields: [createdByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  owners                      ProjectApplicationVersionOwner[]
+  swimlaneStages              ProjectApplicationSwimlaneStage[]
+  swimlaneWorkflows           ProjectApplicationSwimlaneWorkflow[]
+  swimlaneNodes               ProjectApplicationSwimlaneNode[]
+  swimlaneNodeRoles           ProjectApplicationSwimlaneNodeRole[]
+  swimlaneDependencies        ProjectApplicationSwimlaneDependency[]
+  dictionarySuggestionSources DictionaryOptionSuggestionSource[]
+  establishmentReviews        ProjectEstablishmentReview[]
+  activities                  ProjectApplicationActivity[]
+  commands                    ProjectApplicationCommand[]
+
+  @@unique([projectId, versionNo])
+  @@unique([projectId, id])
+  @@index([projectId, versionStatus])
+  @@map("project_application_version")
+}
+
+model ProjectApplicationVersionOwner {
+  id                   String                    @id @default(uuid()) @db.Uuid
+  applicationVersionId String                    @map("application_version_id") @db.Uuid
+  personId             String                    @map("person_id") @db.Uuid
+  isPrimary            Boolean                   @default(false) @map("is_primary")
+  sortOrder            Int                       @default(0) @map("sort_order")
+  applicationVersion   ProjectApplicationVersion @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  person               Person                    @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([applicationVersionId, personId])
+  @@index([applicationVersionId, sortOrder])
+  @@map("project_application_version_owner")
+}
+
+model ProjectApplicationSwimlaneStage {
+  id                    String                           @id @default(uuid()) @db.Uuid
+  applicationVersionId  String                           @map("application_version_id") @db.Uuid
+  sourceStageTemplateId String?                          @map("source_stage_template_id") @db.Uuid
+  stageCode             String                           @map("stage_code")
+  stageName             String                           @map("stage_name")
+  sortOrder             Int                              @map("sort_order")
+  applicability         PlanItemApplicability            @default(REQUIRED)
+  plannedStartDate      DateTime?                        @map("planned_start_date") @db.Date
+  plannedEndDate        DateTime?                        @map("planned_end_date") @db.Date
+  applicationVersion    ProjectApplicationVersion        @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sourceStageTemplate   StageTemplate?                   @relation(fields: [sourceStageTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  nodes                 ProjectApplicationSwimlaneNode[]
+
+  @@unique([applicationVersionId, id], map: "application_swimlane_stage_version_id_key")
+  @@unique([applicationVersionId, stageCode], map: "application_swimlane_stage_version_code_key")
+  @@index([applicationVersionId, sortOrder], map: "application_swimlane_stage_sort_idx")
+  @@map("project_application_swimlane_stage")
+}
+
+model ProjectApplicationSwimlaneWorkflow {
+  id                       String                           @id @default(uuid()) @db.Uuid
+  applicationVersionId     String                           @map("application_version_id") @db.Uuid
+  sourceWorkflowTemplateId String?                          @map("source_workflow_template_id") @db.Uuid
+  workflowCode             String                           @map("workflow_code")
+  workflowName             String                           @map("workflow_name")
+  description              String
+  sortOrder                Int                              @map("sort_order")
+  enabled                  Boolean                          @default(true)
+  applicationVersion       ProjectApplicationVersion        @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sourceWorkflowTemplate   WorkflowTemplate?                @relation(fields: [sourceWorkflowTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  nodes                    ProjectApplicationSwimlaneNode[]
+
+  @@unique([applicationVersionId, id], map: "application_swimlane_workflow_version_id_key")
+  @@unique([applicationVersionId, workflowCode], map: "application_swimlane_workflow_version_code_key")
+  @@index([applicationVersionId, sortOrder], map: "application_swimlane_workflow_sort_idx")
+  @@map("project_application_swimlane_workflow")
+}
+
+model ProjectApplicationSwimlaneNode {
+  id                            String                                 @id @default(uuid()) @db.Uuid
+  applicationVersionId          String                                 @map("application_version_id") @db.Uuid
+  stageId                       String                                 @map("stage_id") @db.Uuid
+  workflowId                    String                                 @map("workflow_id") @db.Uuid
+  sourceWorkflowStageTemplateId String?                                @map("source_workflow_stage_template_id") @db.Uuid
+  taskName                      String                                 @map("task_name")
+  taskDescription               String                                 @default("") @map("task_description")
+  sortOrder                     Int                                    @map("sort_order")
+  applicability                 PlanItemApplicability                  @default(REQUIRED)
+  plannedStartDate              DateTime?                              @map("planned_start_date") @db.Date
+  plannedEndDate                DateTime?                              @map("planned_end_date") @db.Date
+  updateIntervalDays            Int?                                   @map("update_interval_days")
+  overdueReminderIntervalDays   Int                                    @default(7) @map("overdue_reminder_interval_days")
+  attachmentRequirement         AttachmentRequirement                  @default(NONE) @map("attachment_requirement")
+  applicationVersion            ProjectApplicationVersion              @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  stage                         ProjectApplicationSwimlaneStage        @relation(fields: [applicationVersionId, stageId], references: [applicationVersionId, id], onDelete: Restrict, onUpdate: Restrict)
+  workflow                      ProjectApplicationSwimlaneWorkflow     @relation(fields: [applicationVersionId, workflowId], references: [applicationVersionId, id], onDelete: Restrict, onUpdate: Restrict)
+  sourceWorkflowStageTemplate   WorkflowStageTemplate?                 @relation(fields: [sourceWorkflowStageTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  ownerRoles                    ProjectApplicationSwimlaneNodeRole[]
+  predecessorDependencies       ProjectApplicationSwimlaneDependency[] @relation("ApplicationSwimlaneDependencyPredecessor")
+  successorDependencies         ProjectApplicationSwimlaneDependency[] @relation("ApplicationSwimlaneDependencySuccessor")
+
+  @@unique([applicationVersionId, id], map: "application_swimlane_node_version_id_key")
+  @@index([applicationVersionId, workflowId, stageId, sortOrder], map: "application_swimlane_node_cell_sort_idx")
+  @@map("project_application_swimlane_node")
+}
+
+model ProjectApplicationSwimlaneNodeRole {
+  applicationVersionId String                         @map("application_version_id") @db.Uuid
+  nodeId               String                         @map("node_id") @db.Uuid
+  roleCode             RoleCode                       @map("role_code")
+  sortOrder            Int                            @default(0) @map("sort_order")
+  applicationVersion   ProjectApplicationVersion      @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "application_swimlane_node_role_version_fkey")
+  node                 ProjectApplicationSwimlaneNode @relation(fields: [applicationVersionId, nodeId], references: [applicationVersionId, id], onDelete: Restrict, onUpdate: Restrict, map: "application_swimlane_node_role_node_fkey")
+
+  @@id([applicationVersionId, nodeId, roleCode])
+  @@index([applicationVersionId, nodeId, sortOrder])
+  @@map("project_application_swimlane_node_role")
+}
+
+model ProjectApplicationSwimlaneDependency {
+  id                   String                         @id @default(uuid()) @db.Uuid
+  applicationVersionId String                         @map("application_version_id") @db.Uuid
+  predecessorNodeId    String                         @map("predecessor_node_id") @db.Uuid
+  successorNodeId      String                         @map("successor_node_id") @db.Uuid
+  applicationVersion   ProjectApplicationVersion      @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict, map: "application_swimlane_dependency_version_fkey")
+  predecessor          ProjectApplicationSwimlaneNode @relation("ApplicationSwimlaneDependencyPredecessor", fields: [applicationVersionId, predecessorNodeId], references: [applicationVersionId, id], onDelete: Restrict, onUpdate: Restrict, map: "application_swimlane_dependency_predecessor_fkey")
+  successor            ProjectApplicationSwimlaneNode @relation("ApplicationSwimlaneDependencySuccessor", fields: [applicationVersionId, successorNodeId], references: [applicationVersionId, id], onDelete: Restrict, onUpdate: Restrict, map: "application_swimlane_dependency_successor_fkey")
+
+  @@unique([applicationVersionId, predecessorNodeId, successorNodeId], map: "application_swimlane_dependency_edge_key")
+  @@index([applicationVersionId, successorNodeId], map: "application_swimlane_dependency_successor_idx")
+  @@map("project_application_swimlane_dependency")
+}
+
+model ProjectEstablishmentReview {
+  id                   String                       @id @default(uuid()) @db.Uuid
+  projectId            String                       @map("project_id") @db.Uuid
+  applicationVersionId String                       @map("application_version_id") @db.Uuid
+  submissionNo         Int                          @map("submission_no")
+  submittedByPersonId  String                       @map("submitted_by_person_id") @db.Uuid
+  submittedAt          DateTime                     @map("submitted_at") @db.Timestamptz(3)
+  decision             EstablishmentDecision        @default(PENDING)
+  decidedByPersonId    String?                      @map("reviewed_by_person_id") @db.Uuid
+  decidedByRoleCode    RoleCode?                    @map("decided_by_role_code")
+  decidedAt            DateTime?                    @map("reviewed_at") @db.Timestamptz(3)
+  decisionComment      String?                      @map("review_comment")
+  createdAt            DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  project              Project                      @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  applicationVersion   ProjectApplicationVersion    @relation(fields: [projectId, applicationVersionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  submittedBy          Person                       @relation("EstablishmentSubmitter", fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  decidedBy            Person?                      @relation("EstablishmentReviewer", fields: [decidedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  activities           ProjectApplicationActivity[]
+  commands             ProjectApplicationCommand[]
+  notifications        Notification[]
+
+  @@unique([projectId, submissionNo])
+  @@unique([projectId, id])
+  @@index([decision, submittedAt])
+  @@map("project_establishment_review")
+}
+
+model ProjectApplicationActivity {
+  id                   String                         @id @default(uuid()) @db.Uuid
+  projectId            String                         @map("project_id") @db.Uuid
+  applicationVersionId String?                        @map("application_version_id") @db.Uuid
+  reviewId             String?                        @map("review_id") @db.Uuid
+  activityType         ProjectApplicationActivityType @map("activity_type")
+  actorPersonId        String                         @map("actor_person_id") @db.Uuid
+  actorRoleCode        RoleCode                       @map("actor_role_code")
+  content              String?
+  createdAt            DateTime                       @default(now()) @map("created_at") @db.Timestamptz(3)
+  project              Project                        @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  applicationVersion   ProjectApplicationVersion?     @relation(fields: [projectId, applicationVersionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  review               ProjectEstablishmentReview?    @relation(fields: [projectId, reviewId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  actor                Person                         @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications        Notification[]
+
+  @@unique([projectId, id])
+  @@index([projectId, createdAt])
+  @@map("project_application_activity")
+}
+
+model ProjectApplicationCommand {
+  id                   String                      @id @default(uuid()) @db.Uuid
+  actorPersonId        String                      @map("actor_person_id") @db.Uuid
+  commandId            String                      @map("command_id")
+  actionCode           String                      @map("action_code")
+  projectId            String                      @map("project_id") @db.Uuid
+  applicationVersionId String?                     @map("application_version_id") @db.Uuid
+  reviewId             String?                     @map("review_id") @db.Uuid
+  resultCode           String                      @map("result_code")
+  resultEntityId       String?                     @map("result_entity_id") @db.Uuid
+  createdAt            DateTime                    @default(now()) @map("created_at") @db.Timestamptz(3)
+  actor                Person                      @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  project              Project                     @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  applicationVersion   ProjectApplicationVersion?  @relation(fields: [projectId, applicationVersionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  review               ProjectEstablishmentReview? @relation(fields: [projectId, reviewId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([actorPersonId, commandId])
+  @@index([projectId, createdAt])
+  @@map("project_application_command")
+}
+
+model ProjectCompletionRequest {
+  id                         String                               @id @default(uuid()) @db.Uuid
+  projectId                  String                               @map("project_id") @db.Uuid
+  status                     CompletionRequestStatus
+  rowVersion                 Int                                  @default(0) @map("row_version")
+  currentSubmissionVersionId String?                              @unique @map("current_submission_version_id") @db.Uuid
+  createdAt                  DateTime                             @default(now()) @map("created_at") @db.Timestamptz(3)
+  closedAt                   DateTime?                            @map("closed_at") @db.Timestamptz(3)
+  project                    Project                              @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  currentSubmissionVersion   ProjectCompletionSubmissionVersion?  @relation("ProjectCompletionCurrentSubmission", fields: [currentSubmissionVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  submissionVersions         ProjectCompletionSubmissionVersion[] @relation("ProjectCompletionSubmissions")
+  reviewRounds               ProjectCompletionReviewRound[]
+  supplementRounds           ProjectCompletionSupplementRound[]
+  blocks                     ProjectCompletionBlock[]
+  activities                 ProjectCompletionActivity[]
+  blockingIssues             Issue[]
+  notifications              Notification[]
+  attachmentDrafts           AttachmentDraft[]
+
+  @@unique([id, projectId])
+  @@index([projectId, status])
+  @@map("project_completion_request")
+}
+
+model ProjectCompletionCheck {
+  id            String                       @id @default(uuid()) @db.Uuid
+  projectId     String                       @map("project_id") @db.Uuid
+  reviewRoundId String                       @map("review_round_id") @db.Uuid
+  checkCode     String                       @map("check_code")
+  result        CompletionCheckResult
+  resultSummary String                       @map("result_summary")
+  checkedAt     DateTime                     @map("checked_at") @db.Timestamptz(3)
+  project       Project                      @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reviewRound   ProjectCompletionReviewRound @relation(fields: [projectId, reviewRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([reviewRoundId, checkCode])
+  @@unique([projectId, id])
+  @@map("project_completion_check")
+}
+
+model ProjectCompletionActivity {
+  id                  String                   @id @default(uuid()) @db.Uuid
+  projectId           String                   @map("project_id") @db.Uuid
+  completionRequestId String                   @map("completion_request_id") @db.Uuid
+  activityType        CompletionActivityType   @map("activity_type")
+  actorPersonId       String                   @map("actor_person_id") @db.Uuid
+  actorRoleCode       RoleCode                 @map("actor_role_code")
+  content             String?
+  createdAt           DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  project             Project                  @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest   ProjectCompletionRequest @relation(fields: [completionRequestId, projectId], references: [id, projectId], onDelete: Restrict, onUpdate: Restrict)
+  actor               Person                   @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications       Notification[]
+
+  @@unique([projectId, completionRequestId, id])
+  @@index([completionRequestId, createdAt])
+  @@map("project_completion_activity")
+}
+
+model ProjectCompletionSubmissionVersion {
+  id                                   String                    @id @default(uuid()) @db.Uuid
+  projectId                            String                    @map("project_id") @db.Uuid
+  completionRequestId                  String                    @map("completion_request_id") @db.Uuid
+  versionNo                            Int                       @map("version_no")
+  completionSummary                    String                    @map("completion_summary")
+  unfinishedOptionalAndLegacyStatement String                    @map("unfinished_optional_and_legacy_statement")
+  noUnfinishedItemConfirmed            Boolean                   @map("no_unfinished_item_confirmed")
+  archiveComplianceSelfCheck           String                    @map("archive_compliance_self_check")
+  exceptionStatement                   String?                   @map("exception_statement")
+  truthConfirmed                       Boolean                   @map("truth_confirmed")
+  submittedByPersonId                  String                    @map("submitted_by_person_id") @db.Uuid
+  submittedRoleCode                    RoleCode                  @default(KEY_SUB_I) @map("submitted_role_code")
+  submittedAt                          DateTime                  @map("submitted_at") @db.Timestamptz(3)
+  project                              Project                   @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest                    ProjectCompletionRequest  @relation("ProjectCompletionSubmissions", fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  currentForRequest                    ProjectCompletionRequest? @relation("ProjectCompletionCurrentSubmission")
+  submittedBy                          Person                    @relation(fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  businessAttachments                  BusinessAttachment[]
+
+  @@unique([completionRequestId, versionNo])
+  @@unique([projectId, id])
+  @@map("project_completion_submission_version")
+}
+
+model ProjectCompletionReviewRound {
+  id                           String                             @id @default(uuid()) @db.Uuid
+  projectId                    String                             @map("project_id") @db.Uuid
+  completionRequestId          String                             @map("completion_request_id") @db.Uuid
+  roundNo                      Int                                @map("round_no")
+  status                       ProjectCompletionReviewRoundStatus
+  timeLimitDaysSnapshot        Int                                @map("time_limit_days_snapshot")
+  reminderIntervalDaysSnapshot Int                                @map("reminder_interval_days_snapshot")
+  startedAt                    DateTime                           @map("started_at") @db.Timestamptz(3)
+  dueAt                        DateTime                           @map("due_at") @db.Timestamptz(3)
+  completedAt                  DateTime?                          @map("completed_at") @db.Timestamptz(3)
+  completedByPersonId          String?                            @map("completed_by_person_id") @db.Uuid
+  comment                      String?
+  project                      Project                            @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest            ProjectCompletionRequest           @relation(fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  completedBy                  Person?                            @relation(fields: [completedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  checks                       ProjectCompletionCheck[]
+  notifications                Notification[]
+
+  @@unique([completionRequestId, roundNo])
+  @@unique([projectId, id])
+  @@index([status, dueAt])
+  @@map("project_completion_review_round")
+}
+
+model ProjectCompletionSupplementRound {
+  id                           String                             @id @default(uuid()) @db.Uuid
+  projectId                    String                             @map("project_id") @db.Uuid
+  completionRequestId          String                             @map("completion_request_id") @db.Uuid
+  roundNo                      Int                                @map("round_no")
+  responsiblePersonId          String                             @map("responsible_person_id") @db.Uuid
+  timeLimitDaysSnapshot        Int                                @map("time_limit_days_snapshot")
+  reminderIntervalDaysSnapshot Int                                @map("reminder_interval_days_snapshot")
+  startedAt                    DateTime                           @map("started_at") @db.Timestamptz(3)
+  dueAt                        DateTime                           @map("due_at") @db.Timestamptz(3)
+  completedAt                  DateTime?                          @map("completed_at") @db.Timestamptz(3)
+  completionReason             ProjectCompletionSupplementReason? @map("completion_reason")
+  project                      Project                            @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest            ProjectCompletionRequest           @relation(fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  responsiblePerson            Person                             @relation(fields: [responsiblePersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([completionRequestId, roundNo])
+  @@unique([projectId, id])
+  @@index([completedAt, dueAt])
+  @@map("project_completion_supplement_round")
+}
+
+model ProjectCompletionBlock {
+  id                    String                     @id @default(uuid()) @db.Uuid
+  projectId             String                     @map("project_id") @db.Uuid
+  completionRequestId   String                     @map("completion_request_id") @db.Uuid
+  blockType             ProjectCompletionBlockType @map("block_type")
+  sourceWorkflowStageId String?                    @map("source_workflow_stage_id") @db.Uuid
+  sourceIssueId         String?                    @map("source_issue_id") @db.Uuid
+  checkCode             String?                    @map("check_code")
+  summary               String
+  openedAt              DateTime                   @map("opened_at") @db.Timestamptz(3)
+  clearedAt             DateTime?                  @map("cleared_at") @db.Timestamptz(3)
+  project               Project                    @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest     ProjectCompletionRequest   @relation(fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  sourceWorkflowStage   ProjectWorkflowStage?      @relation(fields: [projectId, sourceWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  sourceIssue           Issue?                     @relation(fields: [projectId, sourceIssueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectId, id])
+  @@index([completionRequestId, clearedAt, blockType])
+  @@map("project_completion_block")
+}
+
+model ProjectArchiveActivity {
+  id                      String               @id @default(uuid()) @db.Uuid
+  projectId               String               @map("project_id") @db.Uuid
+  action                  ProjectArchiveAction
+  reason                  String
+  actorPersonId           String               @map("actor_person_id") @db.Uuid
+  actorRoleCode           RoleCode             @default(PMO) @map("actor_role_code")
+  projectRowVersionBefore Int                  @map("project_row_version_before")
+  occurredAt              DateTime             @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  project                 Project              @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor                   Person               @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications           Notification[]
+
+  @@unique([projectId, id])
+  @@index([projectId, occurredAt])
+  @@map("project_archive_activity")
+}
+
+model ProjectPrimaryKeySubIChange {
+  id                       String          @id @default(uuid()) @db.Uuid
+  projectId                String          @map("project_id") @db.Uuid
+  previousRoleAssignmentId String?         @map("previous_role_assignment_id") @db.Uuid
+  newRoleAssignmentId      String          @map("new_role_assignment_id") @db.Uuid
+  changeReason             String          @map("change_reason")
+  changedByPersonId        String          @map("changed_by_person_id") @db.Uuid
+  changedAt                DateTime        @default(now()) @map("changed_at") @db.Timestamptz(3)
+  project                  Project         @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  previousRoleAssignment   RoleAssignment? @relation("PreviousPrimaryAssignment", fields: [projectId, previousRoleAssignmentId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  newRoleAssignment        RoleAssignment  @relation("NewPrimaryAssignment", fields: [projectId, newRoleAssignmentId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  changedBy                Person          @relation(fields: [changedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([projectId, changedAt])
+  @@map("project_primary_key_sub_i_change")
+}
+
+model ProjectFieldChangeRequest {
+  id                           String                       @id @default(uuid()) @db.Uuid
+  commandId                    String                       @map("command_id") @db.Uuid
+  projectId                    String                       @map("project_id") @db.Uuid
+  previousRequestId            String?                      @map("previous_request_id") @db.Uuid
+  changeCategory               FieldChangeCategory          @map("change_category")
+  projectRowVersionSnapshot    Int                          @map("project_row_version_snapshot")
+  reason                       String
+  status                       FieldChangeRequestStatus     @default(DRAFT)
+  submittedByPersonId          String                       @map("submitted_by_person_id") @db.Uuid
+  submittedRoleCode            RoleCode                     @map("submitted_role_code")
+  primaryKeySubIPersonIdSnapshot String?                     @map("primary_key_sub_i_person_id_snapshot") @db.Uuid
+  governanceEscalationRequired Boolean                      @default(false) @map("governance_escalation_required")
+  governanceEvaluationSummary  String                       @map("governance_evaluation_summary")
+  governanceSettingUpdatedAt   DateTime?                    @map("governance_setting_updated_at") @db.Timestamptz(3)
+  submittedAt                  DateTime                     @map("submitted_at") @db.Timestamptz(3)
+  closedAt                     DateTime?                    @map("closed_at") @db.Timestamptz(3)
+  appliedAt                    DateTime?                    @map("applied_at") @db.Timestamptz(3)
+  createdAt                    DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                      Project                      @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  previousRequest              ProjectFieldChangeRequest?   @relation("FieldChangeRequestHistory", fields: [previousRequestId, projectId], references: [id, projectId], onDelete: Restrict, onUpdate: Restrict)
+  subsequentRequests           ProjectFieldChangeRequest[]  @relation("FieldChangeRequestHistory")
+  submittedBy                  Person                       @relation(fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  items                        ProjectFieldChangeItem[]
+  activities                   ProjectFieldChangeActivity[]
+  notifications                Notification[]
+  attachmentDrafts             AttachmentDraft[]
+  businessAttachments          BusinessAttachment[]
+
+  @@unique([id, projectId])
+  @@unique([submittedByPersonId, commandId])
+  @@index([projectId, status, submittedAt])
+  @@map("project_field_change_request")
+}
+
+model ProjectFieldChangeItem {
+  id             String                    @id @default(uuid()) @db.Uuid
+  requestId      String                    @map("request_id") @db.Uuid
+  fieldCode      String                    @map("field_code")
+  oldValueText   String?                   @map("old_value_text")
+  newValueText   String?                   @map("new_value_text")
+  oldOptionId    String?                   @map("old_option_id") @db.Uuid
+  newOptionId    String?                   @map("new_option_id") @db.Uuid
+  oldNumberValue Decimal?                  @map("old_number_value") @db.Decimal(18, 4)
+  newNumberValue Decimal?                  @map("new_number_value") @db.Decimal(18, 4)
+  oldDateValue   DateTime?                 @map("old_date_value") @db.Date
+  newDateValue   DateTime?                 @map("new_date_value") @db.Date
+  request        ProjectFieldChangeRequest @relation(fields: [requestId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  oldOption      DictionaryOption?         @relation("FieldChangeOldOption", fields: [oldOptionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  newOption      DictionaryOption?         @relation("FieldChangeNewOption", fields: [newOptionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([requestId, fieldCode])
+  @@map("project_field_change_item")
+}
+
+model ProjectFieldChangeActivity {
+  id                  String                    @id @default(uuid()) @db.Uuid
+  requestId           String                    @map("request_id") @db.Uuid
+  activityType        FieldChangeActivityType   @map("activity_type")
+  actorPersonId       String                    @map("actor_person_id") @db.Uuid
+  actorRoleCode       RoleCode                  @map("actor_role_code")
+  content             String?
+  createdAt           DateTime                  @default(now()) @map("created_at") @db.Timestamptz(3)
+  request             ProjectFieldChangeRequest @relation(fields: [requestId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor               Person                    @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications       Notification[]
+  businessAttachments BusinessAttachment[]
+
+  @@unique([requestId, id])
+  @@index([requestId, createdAt])
+  @@map("project_field_change_activity")
+}
+
+model ProjectGovernanceSetting {
+  id                              String   @id @default(uuid()) @db.Uuid
+  suspensionDaysThreshold         Int?     @map("suspension_days_threshold")
+  updatedByPersonId               String   @map("updated_by_person_id") @db.Uuid
+  updatedAt                       DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  updatedBy                       Person   @relation(fields: [updatedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@map("project_governance_setting")
+}
+
+model LifecycleTemplate {
+  id           String                     @id @default(uuid()) @db.Uuid
+  templateCode String                     @unique @map("template_code")
+  templateName String                     @map("template_name")
+  status       LifecycleTemplateStatus    @default(ACTIVE)
+  createdAt    DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  versions     LifecycleTemplateVersion[]
+
+  @@map("lifecycle_template")
+}
+
+model LifecycleTemplateVersion {
+  id                        String                            @id @default(uuid()) @db.Uuid
+  lifecycleTemplateId       String                            @map("lifecycle_template_id") @db.Uuid
+  versionNo                 Int                               @map("version_no")
+  status                    LifecycleTemplateVersionStatus    @default(DRAFT)
+  publishedByPersonId       String?                           @map("published_by_person_id") @db.Uuid
+  publishedAt               DateTime?                         @map("published_at") @db.Timestamptz(3)
+  createdAt                 DateTime                          @default(now()) @map("created_at") @db.Timestamptz(3)
+  lifecycleTemplate         LifecycleTemplate                 @relation(fields: [lifecycleTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  publishedBy               Person?                           @relation(fields: [publishedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  stageTemplates            StageTemplate[]
+  workflowTemplates         WorkflowTemplate[]
+  projectPlanVersions       ProjectPlanVersion[]
+  applicationVersions       ProjectApplicationVersion[]
+  workflowStageTemplates    WorkflowStageTemplate[]
+  workflowStageDependencies WorkflowStageTemplateDependency[]
+
+  @@unique([lifecycleTemplateId, versionNo])
+  @@map("lifecycle_template_version")
+}
+
+model StageTemplate {
+  id                        String                            @id @default(uuid()) @db.Uuid
+  templateVersionId         String                            @map("template_version_id") @db.Uuid
+  stageCode                 String                            @map("stage_code")
+  stageName                 String                            @map("stage_name")
+  sortOrder                 Int                               @map("sort_order")
+  defaultApplicability      PlanItemApplicability             @default(REQUIRED) @map("default_applicability")
+  templateVersion           LifecycleTemplateVersion          @relation(fields: [templateVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  workflowStageTemplates    WorkflowStageTemplate[]
+  projectStages             ProjectStage[]
+  applicationSwimlaneStages ProjectApplicationSwimlaneStage[]
+
+  @@unique([templateVersionId, stageCode])
+  @@map("stage_template")
+}
+
+model WorkflowTemplate {
+  id                           String                               @id @default(uuid()) @db.Uuid
+  templateVersionId            String                               @map("template_version_id") @db.Uuid
+  workflowCode                 String                               @map("workflow_code")
+  workflowName                 String                               @map("workflow_name")
+  description                  String
+  requiredByDefault            Boolean                              @default(true) @map("required_by_default")
+  enabled                      Boolean                              @default(true)
+  templateVersion              LifecycleTemplateVersion             @relation(fields: [templateVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  workflowStageTemplates       WorkflowStageTemplate[]
+  projectWorkflows             ProjectWorkflow[]
+  applicationSwimlaneWorkflows ProjectApplicationSwimlaneWorkflow[]
+
+  @@unique([templateVersionId, workflowCode])
+  @@map("workflow_template")
+}
+
+model WorkflowStageTemplate {
+  id                           String                            @id @default(uuid()) @db.Uuid
+  templateVersionId            String                            @map("template_version_id") @db.Uuid
+  workflowTemplateId           String                            @map("workflow_template_id") @db.Uuid
+  stageTemplateId              String                            @map("stage_template_id") @db.Uuid
+  sortOrder                    Int                               @map("sort_order")
+  defaultTask                  String                            @map("default_task")
+  defaultOwnerRole             RoleCode                          @map("default_owner_role")
+  defaultApplicability         PlanItemApplicability             @default(REQUIRED) @map("default_applicability")
+  defaultAttachmentRequirement AttachmentRequirement             @default(NONE) @map("default_attachment_requirement")
+  templateVersion              LifecycleTemplateVersion          @relation(fields: [templateVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  workflowTemplate             WorkflowTemplate                  @relation(fields: [workflowTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  stageTemplate                StageTemplate                     @relation(fields: [stageTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  predecessorDependencies      WorkflowStageTemplateDependency[] @relation("TemplateDependencyPredecessor")
+  successorDependencies        WorkflowStageTemplateDependency[] @relation("TemplateDependencySuccessor")
+  applicationSwimlaneNodes     ProjectApplicationSwimlaneNode[]
+
+  @@unique([workflowTemplateId, stageTemplateId])
+  @@unique([templateVersionId, id])
+  @@map("workflow_stage_template")
+}
+
+model WorkflowStageTemplateDependency {
+  id                                 String                   @id @default(uuid()) @db.Uuid
+  templateVersionId                  String                   @map("template_version_id") @db.Uuid
+  predecessorWorkflowStageTemplateId String                   @map("predecessor_workflow_stage_template_id") @db.Uuid
+  successorWorkflowStageTemplateId   String                   @map("successor_workflow_stage_template_id") @db.Uuid
+  createdAt                          DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  templateVersion                    LifecycleTemplateVersion @relation(fields: [templateVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  predecessor                        WorkflowStageTemplate    @relation("TemplateDependencyPredecessor", fields: [templateVersionId, predecessorWorkflowStageTemplateId], references: [templateVersionId, id], onDelete: Restrict, onUpdate: Restrict)
+  successor                          WorkflowStageTemplate    @relation("TemplateDependencySuccessor", fields: [templateVersionId, successorWorkflowStageTemplateId], references: [templateVersionId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([templateVersionId, predecessorWorkflowStageTemplateId, successorWorkflowStageTemplateId])
+  @@map("workflow_stage_template_dependency")
+}
+
+model ProjectPlan {
+  id             String                     @id @default(uuid()) @db.Uuid
+  projectId      String                     @unique @map("project_id") @db.Uuid
+  createdAt      DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  project        Project                    @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  versions       ProjectPlanVersion[]
+  changeRequests ProjectPlanChangeRequest[]
+  stages         ProjectStage[]
+  workflows      ProjectWorkflow[]
+  workflowStages ProjectWorkflowStage[]
+
+  @@unique([projectId, id])
+  @@map("project_plan")
+}
+
+model ProjectPlanVersion {
+  id                          String                                  @id @default(uuid()) @db.Uuid
+  projectPlanId               String                                  @map("project_plan_id") @db.Uuid
+  versionNo                   Int                                     @map("version_no")
+  baseVersionId               String?                                 @map("base_version_id") @db.Uuid
+  templateVersionId           String                                  @map("template_version_id") @db.Uuid
+  swimlaneName                String                                  @default("项目生命周期泳道") @map("swimlane_name")
+  status                      ProjectPlanVersionStatus                @default(DRAFT)
+  createdByPersonId           String                                  @map("created_by_person_id") @db.Uuid
+  createdAt                   DateTime                                @default(now()) @map("created_at") @db.Timestamptz(3)
+  activatedAt                 DateTime?                               @map("activated_at") @db.Timestamptz(3)
+  projectPlan                 ProjectPlan                             @relation(fields: [projectPlanId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  baseVersion                 ProjectPlanVersion?                     @relation("PlanVersionHistory", fields: [baseVersionId, projectPlanId], references: [id, projectPlanId], onDelete: Restrict, onUpdate: Restrict)
+  derivedVersions             ProjectPlanVersion[]                    @relation("PlanVersionHistory")
+  templateVersion             LifecycleTemplateVersion                @relation(fields: [templateVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  createdBy                   Person                                  @relation(fields: [createdByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  candidateFor                ProjectPlanChangeRequest?
+  stageVersions               ProjectStageVersion[]
+  workflowVersions            ProjectWorkflowVersion[]
+  workflowStageVersions       ProjectWorkflowStageVersion[]
+  workflowStageDependencies   ProjectWorkflowStageDependencyVersion[]
+  submittedCompletionRequests WorkflowCompletionRequest[]
+
+  @@unique([projectPlanId, versionNo])
+  @@unique([id, projectPlanId])
+  @@index([projectPlanId, status])
+  @@map("project_plan_version")
+}
+
+model ProjectPlanChangeRequest {
+  id                           String                      @id @default(uuid()) @db.Uuid
+  projectId                    String                      @map("project_id") @db.Uuid
+  projectPlanId                String                      @map("project_plan_id") @db.Uuid
+  candidatePlanVersionId       String                      @unique @map("candidate_plan_version_id") @db.Uuid
+  previousRequestId            String?                     @map("previous_request_id") @db.Uuid
+  changeReason                 String                      @map("change_reason")
+  status                       PlanChangeRequestStatus     @default(DRAFT)
+  submittedByPersonId          String                      @map("submitted_by_person_id") @db.Uuid
+  submittedRoleCode            RoleCode                    @map("submitted_role_code")
+  submittedAt                  DateTime                    @map("submitted_at") @db.Timestamptz(3)
+  closedAt                     DateTime?                   @map("closed_at") @db.Timestamptz(3)
+  activatedAt                  DateTime?                   @map("activated_at") @db.Timestamptz(3)
+  createdAt                    DateTime                    @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                      Project                     @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlan                  ProjectPlan                 @relation(fields: [projectId, projectPlanId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  candidatePlanVersion         ProjectPlanVersion          @relation(fields: [candidatePlanVersionId, projectPlanId], references: [id, projectPlanId], onDelete: Restrict, onUpdate: Restrict)
+  previousRequest              ProjectPlanChangeRequest?   @relation("PlanChangeRequestHistory", fields: [previousRequestId, projectPlanId], references: [id, projectPlanId], onDelete: Restrict, onUpdate: Restrict)
+  subsequentRequests           ProjectPlanChangeRequest[]  @relation("PlanChangeRequestHistory")
+  submittedBy                  Person                      @relation(fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  activities                   ProjectPlanChangeActivity[]
+  notifications                Notification[]
+  terminatedCompletionRequests WorkflowCompletionRequest[]
+  attachmentDrafts             AttachmentDraft[]
+  businessAttachments          BusinessAttachment[]
+
+  @@unique([id, projectId])
+  @@unique([id, projectPlanId])
+  @@unique([candidatePlanVersionId, projectPlanId])
+  @@index([projectId, status, submittedAt])
+  @@map("project_plan_change_request")
+}
+
+model ProjectPlanChangeActivity {
+  id                  String                   @id @default(uuid()) @db.Uuid
+  requestId           String                   @map("request_id") @db.Uuid
+  activityType        PlanChangeActivityType   @map("activity_type")
+  actorPersonId       String                   @map("actor_person_id") @db.Uuid
+  actorRoleCode       RoleCode                 @map("actor_role_code")
+  content             String?
+  createdAt           DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  request             ProjectPlanChangeRequest @relation(fields: [requestId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  actor               Person                   @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications       Notification[]
+  businessAttachments BusinessAttachment[]
+
+  @@unique([requestId, id])
+  @@index([requestId, createdAt])
+  @@map("project_plan_change_activity")
+}
+
+model ProjectStage {
+  id                    String                        @id @default(uuid()) @db.Uuid
+  projectId             String                        @map("project_id") @db.Uuid
+  projectPlanId         String                        @map("project_plan_id") @db.Uuid
+  sourceStageTemplateId String?                       @map("source_stage_template_id") @db.Uuid
+  createdAt             DateTime                      @default(now()) @map("created_at") @db.Timestamptz(3)
+  project               Project                       @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlan           ProjectPlan                   @relation(fields: [projectId, projectPlanId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  sourceStageTemplate   StageTemplate?                @relation(fields: [sourceStageTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  versions              ProjectStageVersion[]
+  workflowStages        ProjectWorkflowStage[]
+  workflowStageVersions ProjectWorkflowStageVersion[] @relation("ProjectWorkflowStageVersionStage")
+
+  @@unique([projectId, projectPlanId, id])
+  @@map("project_stage")
+}
+
+model ProjectStageVersion {
+  id                   String                @id @default(uuid()) @db.Uuid
+  projectPlanVersionId String                @map("project_plan_version_id") @db.Uuid
+  projectStageId       String                @map("project_stage_id") @db.Uuid
+  stageCode            String                @map("stage_code")
+  stageName            String                @map("stage_name")
+  sortOrder            Int                   @map("sort_order")
+  applicability        PlanItemApplicability @default(REQUIRED)
+  plannedStartDate     DateTime?             @map("planned_start_date") @db.Date
+  plannedEndDate       DateTime?             @map("planned_end_date") @db.Date
+  projectPlanVersion   ProjectPlanVersion    @relation(fields: [projectPlanVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectStage         ProjectStage          @relation(fields: [projectStageId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectPlanVersionId, projectStageId])
+  @@index([projectPlanVersionId, sortOrder])
+  @@map("project_stage_version")
+}
+
+model ProjectWorkflow {
+  id                       String                        @id @default(uuid()) @db.Uuid
+  projectId                String                        @map("project_id") @db.Uuid
+  projectPlanId            String                        @map("project_plan_id") @db.Uuid
+  sourceWorkflowTemplateId String?                       @map("source_workflow_template_id") @db.Uuid
+  workflowType             WorkflowType                  @map("workflow_type")
+  createdAt                DateTime                      @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                  Project                       @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlan              ProjectPlan                   @relation(fields: [projectId, projectPlanId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  sourceWorkflowTemplate   WorkflowTemplate?             @relation(fields: [sourceWorkflowTemplateId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  versions                 ProjectWorkflowVersion[]
+  workflowStages           ProjectWorkflowStage[]
+  workflowStageVersions    ProjectWorkflowStageVersion[] @relation("ProjectWorkflowStageVersionWorkflow")
+
+  @@unique([projectId, projectPlanId, id])
+  @@map("project_workflow")
+}
+
+model ProjectWorkflowVersion {
+  id                   String             @id @default(uuid()) @db.Uuid
+  projectPlanVersionId String             @map("project_plan_version_id") @db.Uuid
+  projectWorkflowId    String             @map("project_workflow_id") @db.Uuid
+  workflowCode         String             @map("workflow_code")
+  workflowName         String             @map("workflow_name")
+  description          String             @default("")
+  sortOrder            Int                @map("sort_order")
+  enabled              Boolean            @default(true)
+  projectPlanVersion   ProjectPlanVersion @relation(fields: [projectPlanVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflow      ProjectWorkflow    @relation(fields: [projectWorkflowId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectPlanVersionId, projectWorkflowId])
+  @@index([projectPlanVersionId, sortOrder])
+  @@map("project_workflow_version")
+}
+
+model ProjectWorkflowStage {
+  id                      String                                  @id @default(uuid()) @db.Uuid
+  projectId               String                                  @map("project_id") @db.Uuid
+  projectPlanId           String                                  @map("project_plan_id") @db.Uuid
+  projectWorkflowId       String                                  @map("project_workflow_id") @db.Uuid
+  projectStageId          String                                  @map("project_stage_id") @db.Uuid
+  executionStatus         WorkflowExecutionStatus                 @default(NOT_STARTED) @map("execution_status")
+  rowVersion              Int                                     @default(0) @map("row_version")
+  nextUpdateDueDate       DateTime?                               @map("next_update_due_date") @db.Date
+  actualStartAt           DateTime?                               @map("actual_start_at") @db.Timestamptz(3)
+  actualEndAt             DateTime?                               @map("actual_end_at") @db.Timestamptz(3)
+  createdAt               DateTime                                @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                 Project                                 @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlan             ProjectPlan                             @relation(fields: [projectId, projectPlanId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflow         ProjectWorkflow                         @relation(fields: [projectId, projectPlanId, projectWorkflowId], references: [projectId, projectPlanId, id], onDelete: Restrict, onUpdate: Restrict, map: "project_workflow_stage_workflow_fkey")
+  projectStage            ProjectStage                            @relation(fields: [projectId, projectPlanId, projectStageId], references: [projectId, projectPlanId, id], onDelete: Restrict, onUpdate: Restrict, map: "project_workflow_stage_stage_fkey")
+  versions                ProjectWorkflowStageVersion[]
+  workflowUpdates         WorkflowUpdate[]
+  completionRequests      WorkflowCompletionRequest[]
+  predecessorDependencies ProjectWorkflowStageDependencyVersion[] @relation("ProjectDependencyPredecessor")
+  successorDependencies   ProjectWorkflowStageDependencyVersion[] @relation("ProjectDependencySuccessor")
+  issues                  Issue[]
+  notifications           Notification[]
+  completionBlocks        ProjectCompletionBlock[]
+  attachmentDrafts        AttachmentDraft[]
+
+  @@unique([projectId, id])
+  @@unique([projectId, projectPlanId, id])
+  @@index([projectId, executionStatus])
+  @@index([nextUpdateDueDate, executionStatus])
+  @@map("project_workflow_stage")
+}
+
+model ProjectWorkflowStageVersion {
+  id                          String                                     @id @default(uuid()) @db.Uuid
+  projectPlanVersionId        String                                     @map("project_plan_version_id") @db.Uuid
+  projectWorkflowStageId      String                                     @map("project_workflow_stage_id") @db.Uuid
+  projectWorkflowId           String                                     @map("project_workflow_id") @db.Uuid
+  projectStageId              String                                     @map("project_stage_id") @db.Uuid
+  taskName                    String                                     @map("task_name")
+  taskDescription             String                                     @map("task_description")
+  plannedStartDate            DateTime?                                  @map("planned_start_date") @db.Date
+  plannedEndDate              DateTime?                                  @map("planned_end_date") @db.Date
+  updateIntervalDays          Int?                                       @map("update_interval_days")
+  overdueReminderIntervalDays Int                                        @default(7) @map("overdue_reminder_interval_days")
+  sortOrder                   Int                                        @map("sort_order")
+  applicability               PlanItemApplicability                      @default(REQUIRED)
+  attachmentRequirement       AttachmentRequirement                      @default(NONE) @map("attachment_requirement")
+  projectPlanVersion          ProjectPlanVersion                         @relation(fields: [projectPlanVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflowStage        ProjectWorkflowStage                       @relation(fields: [projectWorkflowStageId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflow             ProjectWorkflow                            @relation("ProjectWorkflowStageVersionWorkflow", fields: [projectWorkflowId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectStage                ProjectStage                               @relation("ProjectWorkflowStageVersionStage", fields: [projectStageId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  roleVersions                ProjectWorkflowStageRoleVersion[]
+  reminderPointVersions       ProjectWorkflowStageReminderPointVersion[]
+
+  @@unique([projectPlanVersionId, projectWorkflowStageId])
+  @@index([projectPlanVersionId, sortOrder])
+  @@map("project_workflow_stage_version")
+}
+
+model ProjectWorkflowStageDependencyVersion {
+  id                                String               @id @default(uuid()) @db.Uuid
+  projectId                         String               @map("project_id") @db.Uuid
+  projectPlanVersionId              String               @map("project_plan_version_id") @db.Uuid
+  predecessorProjectWorkflowStageId String               @map("predecessor_workflow_stage_id") @db.Uuid
+  successorProjectWorkflowStageId   String               @map("successor_workflow_stage_id") @db.Uuid
+  createdAt                         DateTime             @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                           Project              @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlanVersion                ProjectPlanVersion   @relation(fields: [projectPlanVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  predecessor                       ProjectWorkflowStage @relation("ProjectDependencyPredecessor", fields: [projectId, predecessorProjectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  successor                         ProjectWorkflowStage @relation("ProjectDependencySuccessor", fields: [projectId, successorProjectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectPlanVersionId, predecessorProjectWorkflowStageId, successorProjectWorkflowStageId])
+  @@unique([projectId, id])
+  @@index([projectId, projectPlanVersionId])
+  @@map("project_workflow_stage_dependency_version")
+}
+
+model ProjectWorkflowStageRoleVersion {
+  id                            String                      @id @default(uuid()) @db.Uuid
+  projectWorkflowStageVersionId String                      @map("project_workflow_stage_version_id") @db.Uuid
+  roleCode                      RoleCode                    @map("role_code")
+  sortOrder                     Int                         @map("sort_order")
+  projectWorkflowStageVersion   ProjectWorkflowStageVersion @relation(fields: [projectWorkflowStageVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectWorkflowStageVersionId, roleCode])
+  @@map("project_workflow_stage_role_version")
+}
+
+model ProjectWorkflowStageReminderPointVersion {
+  id                            String                      @id @default(uuid()) @db.Uuid
+  projectWorkflowStageVersionId String                      @map("project_workflow_stage_version_id") @db.Uuid
+  daysBefore                    Int                         @map("days_before")
+  sortOrder                     Int                         @map("sort_order")
+  projectWorkflowStageVersion   ProjectWorkflowStageVersion @relation(fields: [projectWorkflowStageVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectWorkflowStageVersionId, daysBefore])
+  @@map("project_workflow_stage_reminder_point_version")
+}
+
+model ProjectReminderSetting {
+  projectId                  String    @id @map("project_id") @db.Uuid
+  enabled                    Boolean   @default(true)
+  fillReminderEnabled        Boolean   @default(true) @map("fill_reminder_enabled")
+  includePmoOnFillReminder   Boolean   @default(false) @map("include_pmo_on_fill_reminder")
+  milestoneUpcomingEnabled   Boolean   @default(true) @map("milestone_upcoming_enabled")
+  milestoneOverdueEnabled    Boolean   @default(true) @map("milestone_overdue_enabled")
+  includePmoOnOverdue        Boolean   @default(true) @map("include_pmo_on_overdue")
+  exceptionDigestEnabled     Boolean   @default(true) @map("exception_digest_enabled")
+  exceptionDigestWeekday     Int?      @map("exception_digest_weekday")
+  exceptionDigestTime        DateTime? @map("exception_digest_time") @db.Time(0)
+  includeDeanOnBlockedDigest Boolean   @default(true) @map("include_dean_on_blocked_digest")
+  updatedByPersonId          String    @map("updated_by_person_id") @db.Uuid
+  updatedAt                  DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+  project                    Project   @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  updatedBy                  Person    @relation(fields: [updatedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@map("project_reminder_setting")
+}
+
+model WorkflowUpdate {
+  id                     String                     @id @default(uuid()) @db.Uuid
+  projectId              String                     @map("project_id") @db.Uuid
+  projectWorkflowStageId String                     @map("project_workflow_stage_id") @db.Uuid
+  submittedByPersonId    String                     @map("submitted_by_person_id") @db.Uuid
+  submittedRoleCode      RoleCode                   @map("submitted_role_code")
+  progressSummary        String                     @map("progress_summary")
+  basis                  String
+  expectedCompletionDate DateTime?                  @map("expected_completion_date") @db.Date
+  budgetAmountCny        Decimal?                   @map("budget_amount_cny") @db.Decimal(14, 2)
+  submittedAt            DateTime                   @map("submitted_at") @db.Timestamptz(3)
+  project                Project                    @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflowStage   ProjectWorkflowStage       @relation(fields: [projectId, projectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  submittedBy            Person                     @relation(fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  corrections            WorkflowUpdateCorrection[]
+  businessAttachments    BusinessAttachment[]
+  notifications          Notification[]
+
+  @@unique([id, projectId])
+  @@index([projectId, submittedAt])
+  @@index([projectWorkflowStageId, submittedAt])
+  @@map("workflow_update")
+}
+
+model WorkflowUpdateCorrection {
+  id                      String            @id @default(uuid()) @db.Uuid
+  projectId               String            @map("project_id") @db.Uuid
+  workflowUpdateId        String            @map("workflow_update_id") @db.Uuid
+  sequenceNo              Int               @map("sequence_no")
+  correctedByPersonId     String            @map("corrected_by_person_id") @db.Uuid
+  correctedRoleCode       RoleCode          @map("corrected_role_code")
+  correctionReason        String            @map("correction_reason")
+  revisedProgressSummary  String?           @map("revised_progress_summary")
+  revisedBasis            String?           @map("revised_basis")
+  revisedExpectedDateMode RevisionValueMode @map("revised_expected_date_mode")
+  revisedExpectedDate     DateTime?         @map("revised_expected_date") @db.Date
+  budgetAmountMode        RevisionValueMode @map("budget_amount_mode")
+  revisedBudgetAmountCny  Decimal?          @map("revised_budget_amount_cny") @db.Decimal(14, 2)
+  createdAt               DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                 Project           @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  workflowUpdate          WorkflowUpdate    @relation(fields: [workflowUpdateId, projectId], references: [id, projectId], onDelete: Restrict, onUpdate: Restrict)
+  correctedBy             Person            @relation(fields: [correctedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([workflowUpdateId, sequenceNo])
+  @@unique([projectId, id])
+  @@map("workflow_update_correction")
+}
+
+model WorkflowCompletionRequest {
+  id                              String                          @id @default(uuid()) @db.Uuid
+  projectId                       String                          @map("project_id") @db.Uuid
+  projectWorkflowStageId          String                          @map("project_workflow_stage_id") @db.Uuid
+  submittedPlanVersionId          String                          @map("submitted_plan_version_id") @db.Uuid
+  currentSubmissionId             String?                         @unique @map("current_submission_id") @db.Uuid
+  status                          WorkflowCompletionRequestStatus
+  attachmentRequirementSnapshot   AttachmentRequirement           @map("attachment_requirement_snapshot")
+  rowVersion                      Int                             @default(0) @map("row_version")
+  terminatedByPlanChangeRequestId String?                         @map("terminated_by_plan_change_request_id") @db.Uuid
+  createdAt                       DateTime                        @default(now()) @map("created_at") @db.Timestamptz(3)
+  closedAt                        DateTime?                       @map("closed_at") @db.Timestamptz(3)
+  project                         Project                         @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflowStage            ProjectWorkflowStage            @relation(fields: [projectId, projectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  submittedPlanVersion            ProjectPlanVersion              @relation(fields: [submittedPlanVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  currentSubmission               WorkflowCompletionSubmission?   @relation("WorkflowCompletionCurrentSubmission", fields: [currentSubmissionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  terminatedByPlanChangeRequest   ProjectPlanChangeRequest?       @relation(fields: [projectId, terminatedByPlanChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  submissions                     WorkflowCompletionSubmission[]  @relation("WorkflowCompletionSubmissions")
+  supplements                     WorkflowCompletionSupplement[]
+  reviewRounds                    WorkflowCompletionReviewRound[]
+  activities                      WorkflowCompletionActivity[]
+  notifications                   Notification[]
+
+  @@unique([projectId, id])
+  @@index([projectId, status, createdAt])
+  @@index([projectWorkflowStageId, status])
+  @@map("workflow_completion_request")
+}
+
+model WorkflowCompletionSubmission {
+  id                             String                         @id @default(uuid()) @db.Uuid
+  projectId                      String                         @map("project_id") @db.Uuid
+  completionRequestId            String                         @map("completion_request_id") @db.Uuid
+  submissionNo                   Int                            @map("submission_no")
+  submittedByPersonId            String                         @map("submitted_by_person_id") @db.Uuid
+  submittedRoleCode              RoleCode                       @map("submitted_role_code")
+  progressSummarySnapshot        String                         @map("progress_summary_snapshot")
+  basisSnapshot                  String                         @map("basis_snapshot")
+  expectedCompletionDateSnapshot DateTime?                      @map("expected_completion_date_snapshot") @db.Date
+  submittedAt                    DateTime                       @map("submitted_at") @db.Timestamptz(3)
+  project                        Project                        @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest              WorkflowCompletionRequest      @relation("WorkflowCompletionSubmissions", fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  currentForRequest              WorkflowCompletionRequest?     @relation("WorkflowCompletionCurrentSubmission")
+  submittedBy                    Person                         @relation(fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  supplements                    WorkflowCompletionSupplement[]
+  businessAttachments            BusinessAttachment[]
+
+  @@unique([completionRequestId, submissionNo])
+  @@unique([projectId, id])
+  @@map("workflow_completion_submission")
+}
+
+model WorkflowCompletionSupplement {
+  id                  String                       @id @default(uuid()) @db.Uuid
+  projectId           String                       @map("project_id") @db.Uuid
+  completionRequestId String                       @map("completion_request_id") @db.Uuid
+  submissionId        String                       @map("submission_id") @db.Uuid
+  addedByPersonId     String                       @map("added_by_person_id") @db.Uuid
+  addedRoleCode       RoleCode                     @map("added_role_code")
+  content             String
+  addedAt             DateTime                     @map("added_at") @db.Timestamptz(3)
+  project             Project                      @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest   WorkflowCompletionRequest    @relation(fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  submission          WorkflowCompletionSubmission @relation(fields: [projectId, submissionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  addedBy             Person                       @relation(fields: [addedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  businessAttachments BusinessAttachment[]
+
+  @@unique([projectId, id])
+  @@index([completionRequestId, addedAt])
+  @@map("workflow_completion_supplement")
+}
+
+model WorkflowCompletionReviewRound {
+  id                           String                              @id @default(uuid()) @db.Uuid
+  projectId                    String                              @map("project_id") @db.Uuid
+  completionRequestId          String                              @map("completion_request_id") @db.Uuid
+  roundNo                      Int                                 @map("round_no")
+  status                       WorkflowCompletionReviewRoundStatus
+  timeLimitDaysSnapshot        Int                                 @map("time_limit_days_snapshot")
+  reminderIntervalDaysSnapshot Int                                 @map("reminder_interval_days_snapshot")
+  startedAt                    DateTime                            @map("started_at") @db.Timestamptz(3)
+  dueAt                        DateTime                            @map("due_at") @db.Timestamptz(3)
+  completedAt                  DateTime?                           @map("completed_at") @db.Timestamptz(3)
+  completedByPersonId          String?                             @map("completed_by_person_id") @db.Uuid
+  decisionComment              String?                             @map("decision_comment")
+  project                      Project                             @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest            WorkflowCompletionRequest           @relation(fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  completedBy                  Person?                             @relation(fields: [completedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  pauses                       WorkflowCompletionReviewPause[]
+  notifications                Notification[]
+
+  @@unique([completionRequestId, roundNo])
+  @@unique([projectId, id])
+  @@index([status, dueAt])
+  @@map("workflow_completion_review_round")
+}
+
+model WorkflowCompletionReviewPause {
+  id            String                        @id @default(uuid()) @db.Uuid
+  projectId     String                        @map("project_id") @db.Uuid
+  reviewRoundId String                        @map("review_round_id") @db.Uuid
+  pauseNo       Int                           @map("pause_no")
+  pauseReason   WorkflowCompletionPauseReason @map("pause_reason")
+  startedAt     DateTime                      @map("started_at") @db.Timestamptz(3)
+  endedAt       DateTime?                     @map("ended_at") @db.Timestamptz(3)
+  project       Project                       @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reviewRound   WorkflowCompletionReviewRound @relation(fields: [projectId, reviewRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([reviewRoundId, pauseNo])
+  @@unique([projectId, id])
+  @@map("workflow_completion_review_pause")
+}
+
+model WorkflowCompletionActivity {
+  id                  String                         @id @default(uuid()) @db.Uuid
+  projectId           String                         @map("project_id") @db.Uuid
+  completionRequestId String                         @map("completion_request_id") @db.Uuid
+  sequenceNo          Int                            @map("sequence_no")
+  activityType        WorkflowCompletionActivityType @map("activity_type")
+  actorPersonId       String                         @map("actor_person_id") @db.Uuid
+  actorRoleCode       RoleCode                       @map("actor_role_code")
+  content             String?
+  createdAt           DateTime                       @default(now()) @map("created_at") @db.Timestamptz(3)
+  project             Project                        @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  completionRequest   WorkflowCompletionRequest      @relation(fields: [projectId, completionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  actor               Person                         @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([completionRequestId, sequenceNo])
+  @@unique([projectId, id])
+  @@map("workflow_completion_activity")
+}
+
+model Issue {
+  id                                       String                             @id @default(uuid()) @db.Uuid
+  issueNo                                  String                             @unique @map("issue_no")
+  projectId                                String                             @map("project_id") @db.Uuid
+  projectWorkflowStageId                   String                             @map("project_workflow_stage_id") @db.Uuid
+  projectCompletionRequestId               String?                            @map("project_completion_request_id") @db.Uuid
+  rowVersion                               Int                                @default(0) @map("row_version")
+  reportedByPersonId                       String                             @map("reported_by_person_id") @db.Uuid
+  reportedRoleCode                         RoleCode                           @map("reported_role_code")
+  issueTypeCode                            String                             @default("ISSUE_TYPE") @map("issue_type_code")
+  issueTypeOptionId                        String                             @map("issue_type_option_id") @db.Uuid
+  issueTypeOtherText                       String?                            @map("issue_type_other_text")
+  title                                    String
+  description                              String
+  currentRiskLevel                         RiskLevel                          @default(NONE) @map("current_risk_level")
+  expectedSupport                          String?                            @map("expected_support")
+  openedAt                                 DateTime                           @default(now()) @map("opened_at") @db.Timestamptz(3)
+  resolvedAt                               DateTime?                          @map("resolved_at") @db.Timestamptz(3)
+  resolutionMethod                         ResolutionMethod?                  @map("resolution_method")
+  resolvedByPersonId                       String?                            @map("resolved_by_person_id") @db.Uuid
+  proxyConfirmationReason                  String?                            @map("proxy_confirmation_reason")
+  proxyConfirmationBasis                   String?                            @map("proxy_confirmation_basis")
+  confirmationRequestedAt                  DateTime?                          @map("confirmation_requested_at") @db.Timestamptz(3)
+  confirmationDueAt                        DateTime?                          @map("confirmation_due_at") @db.Timestamptz(3)
+  confirmationRoundNo                      Int                                @default(0) @map("confirmation_round_no")
+  confirmationWaitDaysSnapshot             Int?                               @map("confirmation_wait_days_snapshot")
+  confirmationReminderIntervalDaysSnapshot Int?                               @map("confirmation_reminder_interval_days_snapshot")
+  closedAt                                 DateTime?                          @map("closed_at") @db.Timestamptz(3)
+  invalidCloseReasonCode                   InvalidCloseReason?                @map("invalid_close_reason_code")
+  duplicateIssueId                         String?                            @map("duplicate_issue_id") @db.Uuid
+  relatedClosedIssueId                     String?                            @map("related_closed_issue_id") @db.Uuid
+  recurrenceOfIssueId                      String?                            @map("recurrence_of_issue_id") @db.Uuid
+  project                                  Project                            @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflowStage                     ProjectWorkflowStage               @relation(fields: [projectId, projectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectCompletionRequest                 ProjectCompletionRequest?          @relation(fields: [projectId, projectCompletionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  reportedBy                               Person                             @relation("IssueReporter", fields: [reportedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  resolvedBy                               Person?                            @relation("IssueResolver", fields: [resolvedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issueTypeOption                          DictionaryOption                   @relation("IssueType", fields: [issueTypeCode, issueTypeOptionId], references: [dictionaryCode, id], onDelete: Restrict, onUpdate: Restrict)
+  duplicateIssue                           Issue?                             @relation("IssueDuplicate", fields: [projectId, duplicateIssueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  duplicateIssues                          Issue[]                            @relation("IssueDuplicate")
+  relatedClosedIssue                       Issue?                             @relation("IssueRelatedClosed", fields: [projectId, relatedClosedIssueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  recreatedIssues                          Issue[]                            @relation("IssueRelatedClosed")
+  recurrenceOfIssue                        Issue?                             @relation("IssueRecurrence", fields: [projectId, recurrenceOfIssueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  recurrences                              Issue[]                            @relation("IssueRecurrence")
+  handlingStates                           IssueHandlingState[]
+  activities                               IssueActivity[]
+  decisionRounds                           IssueDecisionRound[]
+  sharedSummaries                          IssueSharedSummary[]
+  completionBlocks                         ProjectCompletionBlock[]
+  businessAttachments                      BusinessAttachment[]
+  attachmentDrafts                         AttachmentDraft[]
+  emails                                   IssueEmail[]
+  notifications                            Notification[]
+  dictionarySuggestionSources              DictionaryOptionSuggestionSource[]
+
+  @@unique([projectId, id])
+  @@index([projectId, openedAt])
+  @@index([currentRiskLevel, resolvedAt, closedAt])
+  @@index([confirmationDueAt])
+  @@index([projectCompletionRequestId, resolvedAt, closedAt])
+  @@map("issue")
+}
+
+model IssueHandlingState {
+  id                           String                 @id @default(uuid()) @db.Uuid
+  projectId                    String                 @map("project_id") @db.Uuid
+  issueId                      String                 @map("issue_id") @db.Uuid
+  stateCode                    IssueHandlingStateCode @map("state_code")
+  responsibilityRoundNo        Int                    @map("responsibility_round_no")
+  requiredRoleCode             RoleCode?              @map("required_role_code")
+  requiredPersonId             String?                @map("required_person_id") @db.Uuid
+  enteredByPersonId            String                 @map("entered_by_person_id") @db.Uuid
+  enteredByRoleCode            RoleCode               @map("entered_by_role_code")
+  enteredAt                    DateTime               @map("entered_at") @db.Timestamptz(3)
+  timeLimitDaysSnapshot        Int?                   @map("time_limit_days_snapshot")
+  reminderIntervalDaysSnapshot Int?                   @map("reminder_interval_days_snapshot")
+  dueAt                        DateTime?              @map("due_at") @db.Timestamptz(3)
+  timeLimitResult              String?                @map("time_limit_result")
+  exitedAt                     DateTime?              @map("exited_at") @db.Timestamptz(3)
+  transitionReason             String?                @map("transition_reason")
+  project                      Project                @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue                        Issue                  @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  requiredPerson               Person?                @relation("IssueStateRequiredPerson", fields: [requiredPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  enteredBy                    Person                 @relation("IssueStateEnteredBy", fields: [enteredByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  activities                   IssueActivity[]
+  notifications                Notification[]
+  decisionRounds               IssueDecisionRound[]
+
+  @@unique([projectId, issueId, id])
+  @@unique([issueId, responsibilityRoundNo])
+  @@unique([projectId, id])
+  @@index([issueId, enteredAt])
+  @@index([requiredRoleCode, exitedAt])
+  @@index([requiredPersonId, exitedAt])
+  @@map("issue_handling_state")
+}
+
+model IssueConfirmationSetting {
+  id                           String   @id @default(uuid()) @db.Uuid
+  projectId                    String?  @unique @map("project_id") @db.Uuid
+  reporterConfirmationWaitDays Int      @map("reporter_confirmation_wait_days")
+  reminderIntervalDays         Int      @map("reminder_interval_days")
+  updatedByPersonId            String   @map("updated_by_person_id") @db.Uuid
+  updatedAt                    DateTime @updatedAt @map("updated_at") @db.Timestamptz(3)
+  project                      Project? @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  updatedBy                    Person   @relation(fields: [updatedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@map("issue_confirmation_setting")
+}
+
+model IssueActivity {
+  id                    String                  @id @default(uuid()) @db.Uuid
+  projectId             String                  @map("project_id") @db.Uuid
+  issueId               String                  @map("issue_id") @db.Uuid
+  handlingStateId       String?                 @map("handling_state_id") @db.Uuid
+  decisionRoundId       String?                 @map("decision_round_id") @db.Uuid
+  sequenceNo            Int                     @map("sequence_no")
+  activityType          IssueActivityType       @map("activity_type")
+  actionCode            String?                 @map("action_code")
+  performedByPersonId   String                  @map("performed_by_person_id") @db.Uuid
+  performedRoleCode     RoleCode                @map("performed_role_code")
+  detail                String
+  visibilityScope       BusinessVisibilityScope @map("visibility_scope")
+  fromRiskLevel         RiskLevel?              @map("from_risk_level")
+  toRiskLevel           RiskLevel?              @map("to_risk_level")
+  riskChangeReason      String?                 @map("risk_change_reason")
+  fromIssueTypeOptionId String?                 @map("from_issue_type_option_id") @db.Uuid
+  toIssueTypeOptionId   String?                 @map("to_issue_type_option_id") @db.Uuid
+  createdAt             DateTime                @default(now()) @map("created_at") @db.Timestamptz(3)
+  project               Project                 @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue                 Issue                   @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  handlingState         IssueHandlingState?     @relation(fields: [projectId, issueId, handlingStateId], references: [projectId, issueId, id], onDelete: Restrict, onUpdate: Restrict)
+  decisionRound         IssueDecisionRound?     @relation(fields: [projectId, issueId, decisionRoundId], references: [projectId, issueId, id], onDelete: Restrict, onUpdate: Restrict)
+  performedBy           Person                  @relation(fields: [performedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  fromIssueTypeOption   DictionaryOption?       @relation("IssueActivityFromType", fields: [fromIssueTypeOptionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  toIssueTypeOption     DictionaryOption?       @relation("IssueActivityToType", fields: [toIssueTypeOptionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications         Notification[]
+  businessAttachments   BusinessAttachment[]
+
+  @@unique([projectId, issueId, id])
+  @@unique([issueId, sequenceNo])
+  @@index([issueId, createdAt])
+  @@map("issue_activity")
+}
+
+model IssueDecisionRound {
+  id                        String                          @id @default(uuid()) @db.Uuid
+  projectId                 String                          @map("project_id") @db.Uuid
+  issueId                   String                          @map("issue_id") @db.Uuid
+  roundNo                   Int                             @map("round_no")
+  status                    IssueDecisionRoundStatus
+  currentHandlingStateId    String                          @map("current_handling_state_id") @db.Uuid
+  rowVersion                Int                             @default(0) @map("row_version")
+  createdAt                 DateTime                        @default(now()) @map("created_at") @db.Timestamptz(3)
+  completedAt               DateTime?                       @map("completed_at") @db.Timestamptz(3)
+  project                   Project                         @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue                     Issue                           @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  currentHandlingState      IssueHandlingState              @relation(fields: [projectId, issueId, currentHandlingStateId], references: [projectId, issueId, id], onDelete: Restrict, onUpdate: Restrict)
+  deanDecision              IssueDeanDecision?
+  implementationSubmissions IssueImplementationSubmission[]
+  reviewTransfers           IssueDeanReviewTransfer[]
+  activities                IssueActivity[]
+  sharedSummaries           IssueSharedSummary[]
+  notifications             Notification[]
+
+  @@unique([issueId, roundNo])
+  @@unique([projectId, issueId, id])
+  @@unique([projectId, id])
+  @@map("issue_decision_round")
+}
+
+model IssueDeanDecision {
+  id                           String                @id @default(uuid()) @db.Uuid
+  projectId                    String                @map("project_id") @db.Uuid
+  decisionRoundId              String                @unique @map("decision_round_id") @db.Uuid
+  decisionCode                 IssueDeanDecisionCode @map("decision_code")
+  decisionContent              String?               @map("decision_content")
+  pmoImplementationInstruction String?               @map("pmo_implementation_instruction")
+  implementationReviewRequired Boolean               @map("implementation_review_required")
+  decidedByPersonId            String                @map("decided_by_person_id") @db.Uuid
+  decidedRoleCode              RoleCode              @default(DEAN) @map("decided_role_code")
+  decidedAt                    DateTime              @map("decided_at") @db.Timestamptz(3)
+  project                      Project               @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  decisionRound                IssueDecisionRound    @relation(fields: [projectId, decisionRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  decidedBy                    Person                @relation(fields: [decidedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  businessAttachments          BusinessAttachment[]
+
+  @@unique([projectId, id])
+  @@unique([projectId, decisionRoundId])
+  @@map("issue_dean_decision")
+}
+
+model IssueImplementationSubmission {
+  id                  String                     @id @default(uuid()) @db.Uuid
+  projectId           String                     @map("project_id") @db.Uuid
+  decisionRoundId     String                     @map("decision_round_id") @db.Uuid
+  submissionNo        Int                        @map("submission_no")
+  submittedByPersonId String                     @map("submitted_by_person_id") @db.Uuid
+  submittedRoleCode   RoleCode                   @default(PMO) @map("submitted_role_code")
+  resultSummary       String                     @map("result_summary")
+  submittedAt         DateTime                   @map("submitted_at") @db.Timestamptz(3)
+  project             Project                    @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  decisionRound       IssueDecisionRound         @relation(fields: [projectId, decisionRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  submittedBy         Person                     @relation(fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  review              IssueImplementationReview?
+  sharedSummaries     IssueSharedSummary[]
+  businessAttachments BusinessAttachment[]
+  notifications       Notification[]
+
+  @@unique([decisionRoundId, submissionNo])
+  @@unique([projectId, id])
+  @@map("issue_implementation_submission")
+}
+
+model IssueImplementationReview {
+  id                         String                            @id @default(uuid()) @db.Uuid
+  projectId                  String                            @map("project_id") @db.Uuid
+  implementationSubmissionId String                            @unique @map("implementation_submission_id") @db.Uuid
+  reviewedByPersonId         String                            @map("reviewed_by_person_id") @db.Uuid
+  decision                   IssueImplementationReviewDecision
+  comment                    String?
+  reviewedAt                 DateTime                          @map("reviewed_at") @db.Timestamptz(3)
+  project                    Project                           @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  implementationSubmission   IssueImplementationSubmission     @relation(fields: [projectId, implementationSubmissionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  reviewedBy                 Person                            @relation(fields: [reviewedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectId, id])
+  @@unique([projectId, implementationSubmissionId])
+  @@map("issue_implementation_review")
+}
+
+model IssueDeanReviewTransfer {
+  id                     String             @id @default(uuid()) @db.Uuid
+  projectId              String             @map("project_id") @db.Uuid
+  decisionRoundId        String             @map("decision_round_id") @db.Uuid
+  fromDeanPersonId       String             @map("from_dean_person_id") @db.Uuid
+  requestedByPmoPersonId String             @map("requested_by_pmo_person_id") @db.Uuid
+  requestReason          String             @map("request_reason")
+  requestedAt            DateTime           @map("requested_at") @db.Timestamptz(3)
+  acceptedByDeanPersonId String?            @map("accepted_by_dean_person_id") @db.Uuid
+  acceptedAt             DateTime?          @map("accepted_at") @db.Timestamptz(3)
+  project                Project            @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  decisionRound          IssueDecisionRound @relation(fields: [projectId, decisionRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  fromDean               Person             @relation("IssueReviewTransferFromDean", fields: [fromDeanPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  requestedByPmo         Person             @relation("IssueReviewTransferRequester", fields: [requestedByPmoPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  acceptedByDean         Person?            @relation("IssueReviewTransferAcceptedDean", fields: [acceptedByDeanPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectId, id])
+  @@index([decisionRoundId, acceptedAt])
+  @@map("issue_dean_review_transfer")
+}
+
+model IssueSharedSummary {
+  id                         String                         @id @default(uuid()) @db.Uuid
+  projectId                  String                         @map("project_id") @db.Uuid
+  issueId                    String                         @map("issue_id") @db.Uuid
+  decisionRoundId            String?                        @map("decision_round_id") @db.Uuid
+  implementationSubmissionId String?                        @map("implementation_submission_id") @db.Uuid
+  summaryType                IssueSharedSummaryType         @map("summary_type")
+  content                    String
+  publishedByPersonId        String                         @map("published_by_person_id") @db.Uuid
+  publishedRoleCode          RoleCode                       @map("published_role_code")
+  publishedAt                DateTime                       @map("published_at") @db.Timestamptz(3)
+  project                    Project                        @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue                      Issue                          @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  decisionRound              IssueDecisionRound?            @relation(fields: [projectId, decisionRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  implementationSubmission   IssueImplementationSubmission? @relation(fields: [projectId, implementationSubmissionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  publishedBy                Person                         @relation(fields: [publishedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  notifications              Notification[]
+
+  @@unique([projectId, id])
+  @@index([issueId, publishedAt])
+  @@map("issue_shared_summary")
+}
+
+model ExternalContact {
+  id                   String                @id @default(uuid()) @db.Uuid
+  contactName          String                @map("contact_name")
+  email                String
+  categoryCode         String                @map("category_code")
+  organizationName     String?               @map("organization_name")
+  status               ExternalContactStatus @default(ACTIVE)
+  createdAt            DateTime              @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime              @updatedAt @map("updated_at") @db.Timestamptz(3)
+  issueEmailRecipients IssueEmailRecipient[]
+
+  @@unique([email, categoryCode])
+  @@index([status, categoryCode])
+  @@map("external_contact")
+}
+
+model IssueEmail {
+  id              String                  @id @default(uuid()) @db.Uuid
+  projectId       String                  @map("project_id") @db.Uuid
+  issueId         String                  @map("issue_id") @db.Uuid
+  sentByPersonId  String                  @map("sent_by_person_id") @db.Uuid
+  sentByRoleCode  RoleCode                @map("sent_by_role_code")
+  subject         String
+  body            String
+  status          IssueEmailStatus        @default(PENDING)
+  visibilityScope BusinessVisibilityScope @default(PMO_ONLY) @map("visibility_scope")
+  idempotencyKey  String                  @unique @map("idempotency_key")
+  requestedAt     DateTime                @default(now()) @map("requested_at") @db.Timestamptz(3)
+  sentAt          DateTime?               @map("sent_at") @db.Timestamptz(3)
+  project         Project                 @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue           Issue                   @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  sentBy          Person                  @relation(fields: [sentByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  recipients      IssueEmailRecipient[]
+
+  @@unique([projectId, issueId, id])
+  @@unique([projectId, id])
+  @@index([issueId, requestedAt])
+  @@map("issue_email")
+}
+
+model IssueEmailRecipient {
+  id                     String                 @id @default(uuid()) @db.Uuid
+  projectId              String                 @map("project_id") @db.Uuid
+  issueEmailId           String                 @map("issue_email_id") @db.Uuid
+  personId               String?                @map("person_id") @db.Uuid
+  externalContactId      String?                @map("external_contact_id") @db.Uuid
+  recipientType          EmailRecipientType     @map("recipient_type")
+  recipientNameSnapshot  String                 @map("recipient_name_snapshot")
+  recipientEmailSnapshot String                 @map("recipient_email_snapshot")
+  deliveryStatus         EmailDeliveryStatus    @default(PENDING) @map("delivery_status")
+  project                Project                @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issueEmail             IssueEmail             @relation(fields: [projectId, issueEmailId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  person                 Person?                @relation(fields: [personId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  externalContact        ExternalContact?       @relation(fields: [externalContactId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  deliveryAttempts       EmailDeliveryAttempt[]
+
+  @@unique([projectId, issueEmailId, id])
+  @@unique([projectId, id])
+  @@index([issueEmailId, recipientType])
+  @@map("issue_email_recipient")
+}
+
+model EmailDeliveryAttempt {
+  id                    String              @id @default(uuid()) @db.Uuid
+  projectId             String              @map("project_id") @db.Uuid
+  issueEmailRecipientId String              @map("issue_email_recipient_id") @db.Uuid
+  attemptNo             Int                 @map("attempt_no")
+  status                EmailAttemptStatus
+  providerMessageId     String?             @map("provider_message_id")
+  errorCode             String?             @map("error_code")
+  errorMessage          String?             @map("error_message")
+  attemptedAt           DateTime            @map("attempted_at") @db.Timestamptz(3)
+  project               Project             @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issueEmailRecipient   IssueEmailRecipient @relation(fields: [projectId, issueEmailRecipientId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([issueEmailRecipientId, attemptNo])
+  @@index([projectId, attemptedAt])
+  @@map("email_delivery_attempt")
+}
+
+model Notification {
+  id                              String                         @id @default(uuid()) @db.Uuid
+  recipientPersonId               String                         @map("recipient_person_id") @db.Uuid
+  recipientRoleCode               RoleCode                       @map("recipient_role_code")
+  notificationType                NotificationType               @map("notification_type")
+  eventCode                       String                         @map("event_code")
+  triggeredByPersonId             String?                        @map("triggered_by_person_id") @db.Uuid
+  triggeredByRoleCode             RoleCode?                      @map("triggered_by_role_code")
+  issueId                         String?                        @map("issue_id") @db.Uuid
+  issueHandlingStateId            String?                        @map("issue_handling_state_id") @db.Uuid
+  issueActivityId                 String?                        @map("issue_activity_id") @db.Uuid
+  projectWorkflowStageId          String?                        @map("project_workflow_stage_id") @db.Uuid
+  projectId                       String?                        @map("project_id") @db.Uuid
+  projectEstablishmentReviewId    String?                        @map("project_establishment_review_id") @db.Uuid
+  projectApplicationActivityId    String?                        @map("project_application_activity_id") @db.Uuid
+  projectPlanChangeRequestId      String?                        @map("project_plan_change_request_id") @db.Uuid
+  projectPlanChangeActivityId     String?                        @map("project_plan_change_activity_id") @db.Uuid
+  projectFieldChangeRequestId     String?                        @map("project_field_change_request_id") @db.Uuid
+  projectFieldChangeActivityId    String?                        @map("project_field_change_activity_id") @db.Uuid
+  projectCompletionRequestId      String?                        @map("project_completion_request_id") @db.Uuid
+  projectCompletionActivityId     String?                        @map("project_completion_activity_id") @db.Uuid
+  workflowUpdateId                String?                        @map("workflow_update_id") @db.Uuid
+  workflowCompletionRequestId     String?                        @map("workflow_completion_request_id") @db.Uuid
+  workflowCompletionReviewRoundId String?                        @map("workflow_completion_review_round_id") @db.Uuid
+  issueDecisionRoundId            String?                        @map("issue_decision_round_id") @db.Uuid
+  issueImplementationSubmissionId String?                        @map("issue_implementation_submission_id") @db.Uuid
+  projectCompletionReviewRoundId  String?                        @map("project_completion_review_round_id") @db.Uuid
+  issueSharedSummaryId            String?                        @map("issue_shared_summary_id") @db.Uuid
+  projectArchiveActivityId        String?                        @map("project_archive_activity_id") @db.Uuid
+  reminderRunId                   String?                        @map("reminder_run_id") @db.Uuid
+  title                           String
+  content                         String
+  eventKey                        String                         @map("event_key")
+  readStatus                      NotificationReadStatus         @default(UNREAD) @map("read_status")
+  messageKind                     NotificationMessageKind        @default(INFORMATIONAL) @map("message_kind")
+  actionStatus                    NotificationActionStatus       @default(NOT_APPLICABLE) @map("action_status")
+  actionCompletedAt               DateTime?                      @map("action_completed_at") @db.Timestamptz(3)
+  actionCompletionReason          String?                        @map("action_completion_reason")
+  actionGroupKey                  String?                        @map("action_group_key")
+  createdAt                       DateTime                       @default(now()) @map("created_at") @db.Timestamptz(3)
+  readAt                          DateTime?                      @map("read_at") @db.Timestamptz(3)
+  recipient                       Person                         @relation("NotificationRecipient", fields: [recipientPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  triggeredBy                     Person?                        @relation("NotificationTrigger", fields: [triggeredByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  project                         Project?                       @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue                           Issue?                         @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueHandlingState              IssueHandlingState?            @relation(fields: [projectId, issueId, issueHandlingStateId], references: [projectId, issueId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueActivity                   IssueActivity?                 @relation(fields: [projectId, issueId, issueActivityId], references: [projectId, issueId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflowStage            ProjectWorkflowStage?          @relation(fields: [projectId, projectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectEstablishmentReview      ProjectEstablishmentReview?    @relation(fields: [projectId, projectEstablishmentReviewId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectApplicationActivity      ProjectApplicationActivity?    @relation(fields: [projectId, projectApplicationActivityId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlanChangeRequest        ProjectPlanChangeRequest?      @relation(fields: [projectId, projectPlanChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlanChangeActivity       ProjectPlanChangeActivity?     @relation(fields: [projectPlanChangeRequestId, projectPlanChangeActivityId], references: [requestId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectFieldChangeRequest       ProjectFieldChangeRequest?     @relation(fields: [projectId, projectFieldChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectFieldChangeActivity      ProjectFieldChangeActivity?    @relation(fields: [projectFieldChangeRequestId, projectFieldChangeActivityId], references: [requestId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectCompletionRequest        ProjectCompletionRequest?      @relation(fields: [projectId, projectCompletionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectCompletionActivity       ProjectCompletionActivity?     @relation(fields: [projectId, projectCompletionRequestId, projectCompletionActivityId], references: [projectId, completionRequestId, id], onDelete: Restrict, onUpdate: Restrict)
+  workflowUpdate                  WorkflowUpdate?                @relation(fields: [projectId, workflowUpdateId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  workflowCompletionRequest       WorkflowCompletionRequest?     @relation(fields: [projectId, workflowCompletionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  workflowCompletionReviewRound   WorkflowCompletionReviewRound? @relation(fields: [projectId, workflowCompletionReviewRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueDecisionRound              IssueDecisionRound?            @relation(fields: [projectId, issueDecisionRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueImplementationSubmission   IssueImplementationSubmission? @relation(fields: [projectId, issueImplementationSubmissionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectCompletionReviewRound    ProjectCompletionReviewRound?  @relation(fields: [projectId, projectCompletionReviewRoundId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueSharedSummary              IssueSharedSummary?            @relation(fields: [projectId, issueSharedSummaryId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectArchiveActivity          ProjectArchiveActivity?        @relation(fields: [projectId, projectArchiveActivityId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  reminderRun                     ReminderRun?                   @relation(fields: [reminderRunId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  outbox                          NotificationOutbox[]
+
+  @@unique([id, recipientPersonId])
+  @@unique([eventKey, recipientPersonId, recipientRoleCode], map: "notification_event_recipient_role_key")
+  @@index([recipientPersonId, readStatus, createdAt])
+  @@index([recipientPersonId, actionStatus, createdAt])
+  @@index([projectId, notificationType, createdAt])
+  @@index([issueId, createdAt])
+  @@map("notification")
+}
+
+model CollaborationTimeLimitSetting {
+  id                   String                          @id @default(uuid()) @db.Uuid
+  projectId            String?                         @map("project_id") @db.Uuid
+  responsibilityType   CollaborationResponsibilityType @map("responsibility_type")
+  timeLimitDays        Int                             @map("time_limit_days")
+  reminderIntervalDays Int                             @map("reminder_interval_days")
+  updatedByPersonId    String                          @map("updated_by_person_id") @db.Uuid
+  updatedAt            DateTime                        @updatedAt @map("updated_at") @db.Timestamptz(3)
+  project              Project?                        @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  updatedBy            Person                          @relation(fields: [updatedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectId, responsibilityType])
+  @@index([responsibilityType])
+  @@map("collaboration_time_limit_setting")
+}
+
+model NotificationOutbox {
+  id                     String                      @id @default(uuid()) @db.Uuid
+  notificationId         String                      @map("notification_id") @db.Uuid
+  recipientPersonId      String                      @map("recipient_person_id") @db.Uuid
+  recipientEmailSnapshot String?                     @map("recipient_email_snapshot")
+  templateCode           String                      @map("template_code")
+  payload                Json
+  eventKey               String                      @unique @map("event_key")
+  status                 OutboxStatus                @default(PENDING)
+  maxAttempts            Int                         @default(5) @map("max_attempts")
+  attemptCount           Int                         @default(0) @map("attempt_count")
+  nextAttemptAt          DateTime?                   @map("next_attempt_at") @db.Timestamptz(3)
+  leaseOwner             String?                     @map("lease_owner")
+  leaseExpiresAt         DateTime?                   @map("lease_expires_at") @db.Timestamptz(3)
+  lastErrorCode          String?                     @map("last_error_code")
+  createdAt              DateTime                    @default(now()) @map("created_at") @db.Timestamptz(3)
+  completedAt            DateTime?                   @map("completed_at") @db.Timestamptz(3)
+  notification           Notification                @relation(fields: [notificationId, recipientPersonId], references: [id, recipientPersonId], onDelete: Restrict, onUpdate: Restrict)
+  recipient              Person                      @relation(fields: [recipientPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  attempts               NotificationOutboxAttempt[]
+
+  @@index([status, nextAttemptAt])
+  @@map("notification_outbox")
+}
+
+model NotificationOutboxAttempt {
+  id                String              @id @default(uuid()) @db.Uuid
+  outboxId          String              @map("outbox_id") @db.Uuid
+  attemptNo         Int                 @map("attempt_no")
+  status            OutboxAttemptStatus
+  providerMessageId String?             @map("provider_message_id")
+  errorCode         String?             @map("error_code")
+  attemptedAt       DateTime            @map("attempted_at") @db.Timestamptz(3)
+  outbox            NotificationOutbox  @relation(fields: [outboxId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([outboxId, attemptNo])
+  @@map("notification_outbox_attempt")
+}
+
+model AttachmentDraft {
+  id                          String                     @id @default(uuid()) @db.Uuid
+  projectId                   String                     @map("project_id") @db.Uuid
+  parentType                  AttachmentParentType       @map("parent_type")
+  purposeCode                 String                     @map("purpose_code")
+  visibilityScope             BusinessVisibilityScope    @map("visibility_scope")
+  uploaderPersonId            String                     @map("uploader_person_id") @db.Uuid
+  uploaderRoleCode            RoleCode                   @map("uploader_role_code")
+  projectWorkflowStageId      String?                    @map("project_workflow_stage_id") @db.Uuid
+  issueId                     String?                    @map("issue_id") @db.Uuid
+  projectPlanChangeRequestId  String?                    @map("project_plan_change_request_id") @db.Uuid
+  projectFieldChangeRequestId String?                    @map("project_field_change_request_id") @db.Uuid
+  projectCompletionRequestId  String?                    @map("project_completion_request_id") @db.Uuid
+  status                      AttachmentDraftStatus      @default(OPEN)
+  rowVersion                  Int                        @default(0) @map("row_version")
+  lastActivityAt              DateTime                   @map("last_activity_at") @db.Timestamptz(3)
+  expiresAt                   DateTime                   @map("expires_at") @db.Timestamptz(3)
+  submittedParentId           String?                    @map("submitted_parent_id") @db.Uuid
+  createdAt                   DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                     Project                    @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  uploader                    Person                     @relation(fields: [uploaderPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  projectWorkflowStage        ProjectWorkflowStage?      @relation(fields: [projectId, projectWorkflowStageId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issue                       Issue?                     @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlanChangeRequest    ProjectPlanChangeRequest?  @relation(fields: [projectId, projectPlanChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectFieldChangeRequest   ProjectFieldChangeRequest? @relation(fields: [projectId, projectFieldChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectCompletionRequest    ProjectCompletionRequest?  @relation(fields: [projectId, projectCompletionRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  uploadSessions              AttachmentUploadSession[]
+
+  @@unique([projectId, id])
+  @@index([status, lastActivityAt])
+  @@map("attachment_draft")
+}
+
+model AttachmentUploadSession {
+  id                String                        @id @default(uuid()) @db.Uuid
+  projectId         String                        @map("project_id") @db.Uuid
+  attachmentDraftId String                        @map("attachment_draft_id") @db.Uuid
+  uploaderPersonId  String                        @map("uploader_person_id") @db.Uuid
+  status            AttachmentUploadSessionStatus @default(OPEN)
+  idempotencyKey    String                        @map("idempotency_key")
+  expiresAt         DateTime                      @map("expires_at") @db.Timestamptz(3)
+  lastActivityAt    DateTime                      @map("last_activity_at") @db.Timestamptz(3)
+  createdAt         DateTime                      @default(now()) @map("created_at") @db.Timestamptz(3)
+  project           Project                       @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  attachmentDraft   AttachmentDraft               @relation(fields: [projectId, attachmentDraftId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  uploader          Person                        @relation(fields: [uploaderPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  fileAssets        FileAsset[]
+
+  @@unique([projectId, id])
+  @@unique([uploaderPersonId, idempotencyKey], map: "attachment_upload_session_uploader_person_id_idempotency_key_ke")
+  @@index([status, expiresAt])
+  @@map("attachment_upload_session")
+}
+
+model FileAsset {
+  id                        String                   @id @default(uuid()) @db.Uuid
+  projectId                 String                   @map("project_id") @db.Uuid
+  attachmentUploadSessionId String                   @map("attachment_upload_session_id") @db.Uuid
+  status                    FileAssetStatus          @default(UPLOADING)
+  originalFileName          String                   @map("original_file_name")
+  mediaType                 String                   @map("media_type")
+  sizeBytes                 BigInt                   @map("size_bytes")
+  sha256                    String
+  storageObjectKey          String                   @unique @map("storage_object_key")
+  storageObjectVersion      String?                  @map("storage_object_version")
+  uploadedByPersonId        String                   @map("uploaded_by_person_id") @db.Uuid
+  uploadedRoleCode          RoleCode                 @map("uploaded_role_code")
+  declarationVersion        String                   @map("declaration_version")
+  availableAt               DateTime?                @map("available_at") @db.Timestamptz(3)
+  rejectedAt                DateTime?                @map("rejected_at") @db.Timestamptz(3)
+  rejectionCode             String?                  @map("rejection_code")
+  removedAt                 DateTime?                @map("removed_at") @db.Timestamptz(3)
+  removalReason             AttachmentRemovalReason? @map("removal_reason")
+  cleanupAttemptCount       Int                      @default(0) @map("cleanup_attempt_count")
+  cleanupLeaseOwner         String?                  @map("cleanup_lease_owner")
+  cleanupLeaseExpiresAt     DateTime?                @map("cleanup_lease_expires_at") @db.Timestamptz(3)
+  cleanupNextAttemptAt      DateTime?                @map("cleanup_next_attempt_at") @db.Timestamptz(3)
+  cleanupLastErrorCode      String?                  @map("cleanup_last_error_code")
+  createdAt                 DateTime                 @default(now()) @map("created_at") @db.Timestamptz(3)
+  project                   Project                  @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  attachmentUploadSession   AttachmentUploadSession  @relation(fields: [projectId, attachmentUploadSessionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  uploadedBy                Person                   @relation(fields: [uploadedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  businessAttachment        BusinessAttachment?
+
+  @@unique([projectId, id])
+  @@index([attachmentUploadSessionId, status])
+  @@index([cleanupNextAttemptAt, cleanupLeaseExpiresAt])
+  @@map("file_asset")
+}
+
+model BusinessAttachment {
+  id                                   String                              @id @default(uuid()) @db.Uuid
+  projectId                            String                              @map("project_id") @db.Uuid
+  fileAssetId                          String                              @unique @map("file_asset_id") @db.Uuid
+  parentType                           AttachmentParentType                @map("parent_type")
+  visibilityScope                      BusinessVisibilityScope             @map("visibility_scope")
+  purposeCode                          String                              @map("purpose_code")
+  attachedByPersonId                   String                              @map("attached_by_person_id") @db.Uuid
+  attachedRoleCode                     RoleCode                            @map("attached_role_code")
+  attachedAt                           DateTime                            @map("attached_at") @db.Timestamptz(3)
+  workflowUpdateId                     String?                             @map("workflow_update_id") @db.Uuid
+  workflowCompletionSubmissionId       String?                             @map("workflow_completion_submission_id") @db.Uuid
+  workflowCompletionSupplementId       String?                             @map("workflow_completion_supplement_id") @db.Uuid
+  issueId                              String?                             @map("issue_id") @db.Uuid
+  issueActivityId                      String?                             @map("issue_activity_id") @db.Uuid
+  issueDeanDecisionId                  String?                             @map("issue_dean_decision_id") @db.Uuid
+  issueImplementationSubmissionId      String?                             @map("issue_implementation_submission_id") @db.Uuid
+  projectPlanChangeRequestId           String?                             @map("project_plan_change_request_id") @db.Uuid
+  projectPlanChangeActivityId          String?                             @map("project_plan_change_activity_id") @db.Uuid
+  projectFieldChangeRequestId          String?                             @map("project_field_change_request_id") @db.Uuid
+  projectFieldChangeActivityId         String?                             @map("project_field_change_activity_id") @db.Uuid
+  projectCompletionSubmissionVersionId String?                             @map("project_completion_submission_version_id") @db.Uuid
+  project                              Project                             @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  fileAsset                            FileAsset                           @relation(fields: [projectId, fileAssetId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  attachedBy                           Person                              @relation(fields: [attachedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  workflowUpdate                       WorkflowUpdate?                     @relation(fields: [projectId, workflowUpdateId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  workflowCompletionSubmission         WorkflowCompletionSubmission?       @relation(fields: [projectId, workflowCompletionSubmissionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  workflowCompletionSupplement         WorkflowCompletionSupplement?       @relation(fields: [projectId, workflowCompletionSupplementId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issue                                Issue?                              @relation(fields: [projectId, issueId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueActivity                        IssueActivity?                      @relation(fields: [projectId, issueId, issueActivityId], references: [projectId, issueId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueDeanDecision                    IssueDeanDecision?                  @relation(fields: [projectId, issueDeanDecisionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  issueImplementationSubmission        IssueImplementationSubmission?      @relation(fields: [projectId, issueImplementationSubmissionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlanChangeRequest             ProjectPlanChangeRequest?           @relation(fields: [projectId, projectPlanChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectPlanChangeActivity            ProjectPlanChangeActivity?          @relation(fields: [projectPlanChangeRequestId, projectPlanChangeActivityId], references: [requestId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectFieldChangeRequest            ProjectFieldChangeRequest?          @relation(fields: [projectId, projectFieldChangeRequestId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectFieldChangeActivity           ProjectFieldChangeActivity?         @relation(fields: [projectFieldChangeRequestId, projectFieldChangeActivityId], references: [requestId, id], onDelete: Restrict, onUpdate: Restrict)
+  projectCompletionSubmissionVersion   ProjectCompletionSubmissionVersion? @relation(fields: [projectId, projectCompletionSubmissionVersionId], references: [projectId, id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@unique([projectId, id])
+  @@unique([projectId, fileAssetId])
+  @@index([workflowUpdateId])
+  @@index([workflowCompletionSubmissionId])
+  @@index([issueId])
+  @@index([projectCompletionSubmissionVersionId])
+  @@map("business_attachment")
+}
+
+model AttachmentCleanupRun {
+  id                 String    @id @default(uuid()) @db.Uuid
+  startedAt          DateTime  @map("started_at") @db.Timestamptz(3)
+  completedAt        DateTime? @map("completed_at") @db.Timestamptz(3)
+  scannedCount       Int       @default(0) @map("scanned_count")
+  markedCount        Int       @default(0) @map("marked_count")
+  deleteSuccessCount Int       @default(0) @map("delete_success_count")
+  deleteFailureCount Int       @default(0) @map("delete_failure_count")
+  errorSummary       String?   @map("error_summary")
+
+  @@index([startedAt])
+  @@map("attachment_cleanup_run")
+}
+
+model Dictionary {
+  id             String                       @id @default(uuid()) @db.Uuid
+  dictionaryCode String                       @unique @map("dictionary_code")
+  dictionaryName String                       @map("dictionary_name")
+  description    String
+  enabled        Boolean                      @default(true)
+  createdAt      DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt      DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  options        DictionaryOption[]
+  suggestions    DictionaryOptionSuggestion[]
+
+  @@unique([id, dictionaryCode])
+  @@map("dictionary")
+}
+
+model DictionaryOption {
+  id                                String                       @id @default(uuid()) @db.Uuid
+  dictionaryId                      String                       @map("dictionary_id") @db.Uuid
+  dictionaryCode                    String                       @map("dictionary_code")
+  optionCode                        String                       @map("option_code")
+  displayName                       String                       @map("display_name")
+  sortOrder                         Int                          @default(0) @map("sort_order")
+  enabled                           Boolean                      @default(true)
+  createdAt                         DateTime                     @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                         DateTime                     @updatedAt @map("updated_at") @db.Timestamptz(3)
+  dictionary                        Dictionary                   @relation(fields: [dictionaryId, dictionaryCode], references: [id, dictionaryCode], onDelete: Restrict, onUpdate: Restrict)
+  projectsByDiseaseArea             Project[]                    @relation("ProjectDiseaseArea")
+  projectsByResearchType            Project[]                    @relation("ProjectResearchType")
+  applicationVersionsByDiseaseArea  ProjectApplicationVersion[]  @relation("ApplicationVersionDiseaseArea")
+  applicationVersionsByResearchType ProjectApplicationVersion[]  @relation("ApplicationVersionResearchType")
+  fieldChangeItemsOld               ProjectFieldChangeItem[]     @relation("FieldChangeOldOption")
+  fieldChangeItemsNew               ProjectFieldChangeItem[]     @relation("FieldChangeNewOption")
+  issuesByType                      Issue[]                      @relation("IssueType")
+  issueActivitiesFromType           IssueActivity[]              @relation("IssueActivityFromType")
+  issueActivitiesToType             IssueActivity[]              @relation("IssueActivityToType")
+  suggestionTargets                 DictionaryOptionSuggestion[] @relation("DictionarySuggestionTarget")
+
+  @@unique([dictionaryCode, id])
+  @@unique([dictionaryCode, optionCode])
+  @@index([dictionaryId, enabled, sortOrder])
+  @@map("dictionary_option")
+}
+
+model DictionaryOptionSuggestion {
+  id                  String                             @id @default(uuid()) @db.Uuid
+  dictionaryCode      String                             @map("dictionary_code")
+  proposedDisplayName String                             @map("proposed_display_name")
+  normalizedName      String                             @map("normalized_name")
+  status              DictionaryOptionSuggestionStatus   @default(PENDING)
+  targetOptionId      String?                            @map("target_option_id") @db.Uuid
+  reviewedByPersonId  String?                            @map("reviewed_by_person_id") @db.Uuid
+  reviewedAt          DateTime?                          @map("reviewed_at") @db.Timestamptz(3)
+  reviewComment       String?                            @map("review_comment")
+  rowVersion          Int                                @default(0) @map("row_version")
+  createdAt           DateTime                           @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime                           @updatedAt @map("updated_at") @db.Timestamptz(3)
+  dictionary          Dictionary                         @relation(fields: [dictionaryCode], references: [dictionaryCode], onDelete: Restrict, onUpdate: Restrict)
+  targetOption        DictionaryOption?                  @relation("DictionarySuggestionTarget", fields: [dictionaryCode, targetOptionId], references: [dictionaryCode, id], onDelete: Restrict, onUpdate: Restrict)
+  reviewedBy          Person?                            @relation("DictionarySuggestionReviewer", fields: [reviewedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sources             DictionaryOptionSuggestionSource[]
+
+  @@unique([dictionaryCode, normalizedName], map: "dictionary_suggestion_name_key")
+  @@index([dictionaryCode, status, createdAt], map: "dictionary_suggestion_status_idx")
+  @@map("dictionary_option_suggestion")
+}
+
+model DictionaryOptionSuggestionSource {
+  id                   String                     @id @default(uuid()) @db.Uuid
+  suggestionId         String                     @map("suggestion_id") @db.Uuid
+  applicationVersionId String?                    @map("application_version_id") @db.Uuid
+  issueId              String?                    @map("issue_id") @db.Uuid
+  fieldCode            String                     @map("field_code")
+  submittedByPersonId  String                     @map("submitted_by_person_id") @db.Uuid
+  createdAt            DateTime                   @default(now()) @map("created_at") @db.Timestamptz(3)
+  suggestion           DictionaryOptionSuggestion @relation(fields: [suggestionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  applicationVersion   ProjectApplicationVersion? @relation(fields: [applicationVersionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  issue                Issue?                     @relation(fields: [issueId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  submittedBy          Person                     @relation("DictionarySuggestionSubmitter", fields: [submittedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([suggestionId, createdAt], map: "dictionary_suggestion_source_suggestion_idx")
+  @@map("dictionary_option_suggestion_source")
+}
+
+model AuditLog {
+  id                    String           @id @default(uuid()) @db.Uuid
+  occurredAt            DateTime         @default(now()) @map("occurred_at") @db.Timestamptz(3)
+  actorPersonId         String?          @map("actor_person_id") @db.Uuid
+  actorRoleCode         RoleCode?        @map("actor_role_code")
+  sessionId             String?          @map("session_id") @db.Uuid
+  actorIdentifierMasked String?          @map("actor_identifier_masked")
+  actionCode            String           @map("action_code")
+  result                AuditResult
+  projectId             String?          @map("project_id") @db.Uuid
+  entityType            String           @map("entity_type")
+  entityId              String?          @map("entity_id") @db.Uuid
+  entityBusinessCode    String?          @map("entity_business_code")
+  summary               String
+  changedFields         String[]         @default([]) @map("changed_fields")
+  beforeSnapshot        Json?            @map("before_snapshot")
+  afterSnapshot         Json?            @map("after_snapshot")
+  failureCode           String?          @map("failure_code")
+  ipAddress             String?          @map("ip_address") @db.Inet
+  userAgent             String?          @map("user_agent")
+  correlationId         String           @map("correlation_id")
+  storageTier           AuditStorageTier @default(ONLINE) @map("storage_tier")
+  archivedAt            DateTime?        @map("archived_at") @db.Timestamptz(3)
+  actor                 Person?          @relation(fields: [actorPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  session               Session?         @relation(fields: [sessionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  project               Project?         @relation(fields: [projectId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([projectId, occurredAt])
+  @@index([entityType, entityId, occurredAt])
+  @@index([actorPersonId, occurredAt])
+  @@index([actionCode, occurredAt])
+  @@index([storageTier, occurredAt])
+  @@map("audit_log")
+}
+
+model ExportJob {
+  id                      String       @id @default(uuid()) @db.Uuid
+  requestedByPersonId     String       @map("requested_by_person_id") @db.Uuid
+  requestedRoleCode       RoleCode     @map("requested_role_code")
+  exportType              ExportType   @map("export_type")
+  filterSnapshot          Json         @map("filter_snapshot")
+  fieldSetCode            String       @map("field_set_code")
+  permissionScopeSnapshot Json         @map("permission_scope_snapshot")
+  status                  ExportStatus @default(PENDING)
+  rowCount                Int?         @map("row_count")
+  fileStorageKey          String?      @map("file_storage_key")
+  fileSha256              String?      @map("file_sha256")
+  expiresAt               DateTime?    @map("expires_at") @db.Timestamptz(3)
+  createdAt               DateTime     @default(now()) @map("created_at") @db.Timestamptz(3)
+  startedAt               DateTime?    @map("started_at") @db.Timestamptz(3)
+  completedAt             DateTime?    @map("completed_at") @db.Timestamptz(3)
+  failureCode             String?      @map("failure_code")
+  requestedBy             Person       @relation(fields: [requestedByPersonId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+
+  @@index([requestedByPersonId, createdAt])
+  @@index([status, createdAt])
+  @@index([expiresAt, status])
+  @@map("export_job")
+}
+
+model ReminderRun {
+  id                       String            @id @default(uuid()) @db.Uuid
+  scheduledFor             DateTime          @unique @map("scheduled_for") @db.Timestamptz(3)
+  timezone                 String            @default("Asia/Shanghai")
+  status                   ReminderRunStatus @default(PENDING)
+  attemptCount             Int               @default(0) @map("attempt_count")
+  maxAttempts              Int               @default(5) @map("max_attempts")
+  nextAttemptAt            DateTime?         @map("next_attempt_at") @db.Timestamptz(3)
+  leaseOwner               String?           @map("lease_owner")
+  leaseExpiresAt           DateTime?         @map("lease_expires_at") @db.Timestamptz(3)
+  candidateCount           Int               @default(0) @map("candidate_count")
+  notificationCreatedCount Int               @default(0) @map("notification_created_count")
+  skippedCount             Int               @default(0) @map("skipped_count")
+  startedAt                DateTime          @map("started_at") @db.Timestamptz(3)
+  completedAt              DateTime?         @map("completed_at") @db.Timestamptz(3)
+  lastError                String?           @map("last_error")
+  createdAt                DateTime          @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt                DateTime          @updatedAt @map("updated_at") @db.Timestamptz(3)
+  notifications            Notification[]
+
+  @@index([status, scheduledFor])
+  @@index([leaseExpiresAt, nextAttemptAt])
+  @@map("reminder_run")
+}
+
+model WorkerHeartbeat {
+  id               String                @id @db.Uuid
+  workerId         String                @unique @map("worker_id")
+  processId        Int                   @map("process_id")
+  status           WorkerHeartbeatStatus @default(STARTING)
+  enabledTaskCodes String[]              @default([]) @map("enabled_task_codes")
+  startedAt        DateTime              @map("started_at") @db.Timestamptz(3)
+  lastSeenAt       DateTime              @map("last_seen_at") @db.Timestamptz(3)
+  stoppedAt        DateTime?             @map("stopped_at") @db.Timestamptz(3)
+  updatedAt        DateTime              @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([status, lastSeenAt])
+  @@map("worker_heartbeat")
+}

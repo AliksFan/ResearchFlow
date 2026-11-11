@@ -1,0 +1,2 @@
+# Preserve checksummed migration bytes on every platform.
+packages/db/prisma/migrations/** -text
