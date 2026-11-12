@@ -1,5 +1,7 @@
 # 本地验证指南
 
+中文 | [English](LOCAL_VALIDATION.en.md)
+
 [返回首页](../README.md) · [已记录结果](VALIDATION.md)
 
 先区分两个目标：

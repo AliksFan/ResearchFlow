@@ -1,5 +1,7 @@
 # 架构说明
 
+中文 · [English](ARCHITECTURE.en.md)
+
 [返回首页](../README.md) · [设计证据](ENGINEERING_GUIDE.md) · [本地验证](LOCAL_VALIDATION.md)
 
 ResearchFlow 是一个分层 TypeScript monorepo。Web 与后台 Worker 是两个运行入口，领域包和数据库实现通过工作区依赖复用；它不是由每个目录独立部署的微服务集群。

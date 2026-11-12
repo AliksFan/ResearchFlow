@@ -1,5 +1,7 @@
 # 关键设计与代码导读
 
+中文 | [English](ENGINEERING_GUIDE.en.md)
+
 [返回首页](../README.md) · [业务流程](PRODUCT_WALKTHROUGH.md) · [架构](ARCHITECTURE.md) · [验证记录](VALIDATION.md)
 
 下面每一项都给出可打开的实现和测试入口。测试文件代表验证意图；只有[验证记录](VALIDATION.md)明确列出的范围，才是此展示副本已经运行的检查。数据库集成测试与浏览器 E2E 尚未执行。

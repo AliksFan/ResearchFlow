@@ -1,5 +1,7 @@
 # 用一个虚构项目讲解 ResearchFlow
 
+中文 · [English](README.en.md)
+
 [返回首页](../README.md) · [完整业务流程](../docs/PRODUCT_WALKTHROUGH.md) · [设计证据](../docs/ENGINEERING_GUIDE.md)
 
 这里的案例用于阅读代码、面试讲解或录制演示前的准备。所有名称和角色都是虚构的；它不是数据库 seed、运行截图或真实项目经历。

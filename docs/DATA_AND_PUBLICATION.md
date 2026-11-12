@@ -1,5 +1,7 @@
 # Data safety and reuse
 
+[中文概览](../README.md) · [English overview](../README.en.md)
+
 This source snapshot uses a neutral name and fictional project examples. Customer identity information, customer files, actual environment files, infrastructure configuration, backups, original deployment screenshots and binary assets, installed dependencies, generated output, and original Git history are excluded.
 
 Screenshots under docs/screenshots are newly captured from this source running against a disposable local database with fictional E2E accounts and projects. They do not depict the original deployment or establish complete end-to-end acceptance.

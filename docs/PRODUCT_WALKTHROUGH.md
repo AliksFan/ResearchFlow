@@ -1,5 +1,7 @@
 # 功能与业务流程
 
+中文 · [English](PRODUCT_WALKTHROUGH.en.md)
+
 [返回首页](../README.md) · [架构](ARCHITECTURE.md) · [虚构案例](../examples/README.md)
 
 本文根据公开源码描述行为，供阅读代码或讲解项目使用。流程图是设计示意，未作为此展示副本的浏览器实测记录。

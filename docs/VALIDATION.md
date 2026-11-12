@@ -1,5 +1,7 @@
 # 验证记录
 
+中文 | [English](VALIDATION.en.md)
+
 [返回首页](../README.md) · [复现步骤与隔离环境准备](LOCAL_VALIDATION.md)
 
 ## 源码检查：2026-11-12
