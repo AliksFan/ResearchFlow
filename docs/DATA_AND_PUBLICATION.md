@@ -1,6 +1,8 @@
 # Data safety and reuse
 
-This source snapshot uses a neutral name and fictional project examples. Customer identity information, customer files, actual environment files, infrastructure configuration, backups, screenshots, binary assets, installed dependencies, generated output, and original Git history are excluded.
+This source snapshot uses a neutral name and fictional project examples. Customer identity information, customer files, actual environment files, infrastructure configuration, backups, original deployment screenshots and binary assets, installed dependencies, generated output, and original Git history are excluded.
+
+Screenshots under docs/screenshots are newly captured from this source running against a disposable local database with fictional E2E accounts and projects. They do not depict the original deployment or establish complete end-to-end acceptance.
 
 Test-only passwords, hashes, loopback URLs, and negative-test network examples are fixtures, not live credentials. Never reuse them. Pattern scans reduce accidental disclosure risk but are not a security certification.
 
@@ -10,6 +12,6 @@ No open-source license is included. System capabilities documented here are not 
 
 ## Historical migration identifiers
 
-The historical database migrations remain byte-identical because the schema contract verifies the baseline checksum. A legacy project-code format remains in the baseline. A showcase-only forward migration changes the active constraint to DEMO-* for a fresh fictional database, matching the application and fixtures. This migration has not been executed against a database; it intentionally rejects existing legacy established records.
+The historical database migrations remain byte-identical because the schema contract verifies the baseline checksum. A legacy project-code format remains in the baseline. A showcase-only forward migration changes the active constraint to DEMO-* for a fresh fictional database, matching the application and fixtures. All 25 migrations have been applied only to a new disposable local demonstration database. This is not an upgrade test against existing data; the showcase migration intentionally rejects legacy established records.
 
 Use only a new, disposable database and local test storage. Do not point this snapshot at a shared or production service. Historical upgrade-validation scripts are not substitutes for a full migration test: validate-phase2-upgrade.mjs expects an older five-migration subset and is not part of the default test command.
