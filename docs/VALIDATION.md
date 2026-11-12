@@ -1,38 +1,52 @@
-# Validation results
+# 验证记录
 
-Verified on 2026-11-11 on Windows with Node.js 24.18.0 and pnpm 11.9.0.
+[返回首页](../README.md) · [复现步骤与隔离环境准备](LOCAL_VALIDATION.md)
 
-| Check | Result |
+## 最近一次复核：2026-11-12
+
+环境：Windows、Node.js 24.18.0、pnpm 11.9.0、Prisma 7.8.0、Next.js 16.3.3（webpack）。本轮仅整理展示文档，复用了已有依赖，没有重新安装依赖或修改应用源码。
+
+以下命令从展示副本根目录依次执行，分别检查退出码，全部为 0。使用进程内生成的临时密钥、不可连接的 loopback 数据库 URL，并关闭真实 S3 测试、数据库迁移测试及 Worker 业务任务。
+
+| 检查 | 结果 |
 | --- | --- |
-| Frozen-lockfile dependency install | Passed. Lifecycle scripts disabled; Prisma generation invoked explicitly. |
-| Prisma client generation | Passed (7.8.0). |
-| Prisma schema validation | Passed. |
-| Workspace and E2E source type checks | Passed. |
-| ESLint | Passed with 0 errors and 4 warnings. |
-| Default test command | 419 passed, 2 skipped, across 77 test files. |
-| Workspace build / Next.js production build | Passed (Next.js 16.3.3, webpack). |
-| Schema contract | Passed; 91 models. |
-| Repository boundary, log-redaction, patient-data-ban checks | Passed. |
+| `pnpm db:generate` | Prisma client 生成通过。 |
+| `pnpm db:validate` | Schema 校验通过。 |
+| `pnpm typecheck` | 工作区与 E2E 场景源码类型检查通过。 |
+| `pnpm lint` | 0 错误、4 条已知警告。 |
+| `pnpm test` | 77 个测试文件通过；419 项测试通过，2 项真实 S3 测试跳过。 |
+| 默认测试内的静态检查 | Schema 契约（91 个 model）、数据访问边界、日志脱敏、患者级数据禁用检查均通过。 |
+| `pnpm build` | 工作区及 Next.js 生产构建通过，保留 1 类 file-type 动态依赖警告。 |
+| 展示文档检查 | 相对链接目标、UTF-8 文本、虚构 JSON 及依赖引用检查通过；差异无空白错误。 |
 
-## Warnings retained
-- Four Next.js navigation warnings: three in workflow-completion-panel.tsx and one in workflow-progress-panel.tsx use window.location.assign for internal navigation.
-- The production bundle reports a dynamic-dependency warning from file-type. The build completes, but this warning is not a guarantee that every runtime file-inspection path works.
+文档复核还对照了角色导航、申请状态、数据库约束、Worker 开关和默认参数，以及所引用的测试场景。源码引用证明实现位置，不等于运行环境验收。
 
-## What was not verified
-No database was created or connected. Validation used a nonconnecting loopback database URL and fictional process-only secrets. No database migrations, repository integration tests, browser E2E scenarios, live login flow, SMTP delivery, or real file uploads were executed. The two skipped tests require an actual S3-compatible test service.
+## 保留的警告
 
-The new DEMO project-code migration was reviewed statically, not executed. Build success and unit tests do not establish complete business acceptance, production readiness, or security certification.
+- 4 条 Next.js 内部导航警告：workflow-completion-panel.tsx 中 3 处、workflow-progress-panel.tsx 中 1 处使用 `window.location.assign()`。
+- 生产构建提示 file-type 的动态依赖表达式。构建完成，但不能据此保证所有运行时文件检测路径正常。
 
-The original 379 selected source/config files were rehashed after preparation; none changed. The historical 24 migrations retain their original bytes. This source snapshot adds one showcase-only migration, for 25 total.
+本轮没有为了消除警告而改动应用行为。
 
-## Repeating checks
-Use the pinned package manager. After installing dependencies and supplying a disposable local DATABASE_URL for Prisma configuration, run:
+## 没有验证的范围
 
-    pnpm db:generate
-    pnpm db:validate
-    pnpm typecheck
-    pnpm lint
-    pnpm test
-    pnpm build
+本轮没有创建或连接数据库，也没有执行以下操作：
 
-Default tests exclude database integration suites. Database migrations, fixture seeds, S3 integration, and Playwright E2E require a separately provisioned disposable local environment. Never use shared or production resources.
+- 数据库迁移，包括新增的展示版项目编号约束。
+- Repository 数据库集成测试或浏览器 E2E。
+- 真实登录、实际文件上传/下载或完整的多角色业务流程。
+- SMTP/邮件供应商投递。当前 Worker 仅装配 capture 测试传输。
+
+默认测试排除数据库集成套件；两个跳过的 S3 用例需要实际测试存储服务。E2E 源码类型检查通过，不表示 Playwright 场景已经运行。构建和单测结果不代表生产就绪、完整业务验收或安全认证。
+
+## 首次脱敏验证：2026-11-11
+
+首次准备公开副本时，锁文件安装通过，生命周期脚本关闭，Prisma client 单独生成。当日的类型检查、Lint、419 项单测与构建结果与本轮一致。
+
+首次发布记录还包含对原始 379 个选定源码/配置文件的重新哈希核对，以及 24 条历史迁移的原字节保留。展示副本新增 1 条编号约束迁移，共 25 条；原私有项目未因公开副本准备而改动。本轮未重新访问原私有项目，仅复核当前展示副本。
+
+## 持续集成与复现
+
+截至 2026-11-12，本仓库未配置 GitHub Actions workflow。上表是本地执行记录，不应称为远程 CI 通过。
+
+完整命令、环境变量和后续演示准备见上方复现指南。数据库迁移、fixture seed、S3 与 Playwright E2E 必须使用另行准备的可丢弃隔离环境，不能指向共享或生产资源。
